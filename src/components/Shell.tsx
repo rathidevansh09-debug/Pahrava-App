@@ -54,7 +54,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
   const t = useT();
   const short: Record<Lang, string> = { en: 'EN', mr: 'मरा', hi: 'हिं' };
   return (
-    <div role="radiogroup" aria-label={t.common.language} className="inline-flex rounded-xl bg-surface-2 p-1">
+    <div role="radiogroup" aria-label={t.common.language} className="inline-flex rounded-full bg-[var(--divider)] p-0.5">
       {LANGS.map((l) => (
         <button
           key={l}
@@ -62,7 +62,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
           aria-checked={lang === l}
           lang={l}
           onClick={() => setPrefs({ lang: l })}
-          className={`min-h-[36px] min-w-[44px] rounded-lg px-2 text-sm font-semibold ${lang === l ? 'bg-surface text-text shadow' : 'text-muted'}`}
+          className={`min-h-[34px] min-w-[44px] rounded-full px-2.5 text-sm ${lang === l ? 'bg-surface font-semibold text-text ring-1 ring-[var(--border)]' : 'text-muted'}`}
         >
           {compact ? short[l] : t.langName[l]}
         </button>
@@ -118,9 +118,9 @@ function Brand() {
   const t = useT();
   return (
     <NavLink to="/" className="flex min-h-[44px] items-center gap-2">
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-lg font-bold text-on-primary">P</span>
+      <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-text text-lg font-semibold text-bg">P</span>
       <span className="leading-tight">
-        <span className="block font-bold tracking-wide">{t.app.name}</span>
+        <span className="block text-[17px] font-semibold tracking-[0.04em]">{t.app.name}</span>
         <span className="hidden text-xs text-muted sm:block">{t.app.tagline}</span>
       </span>
     </NavLink>
@@ -140,12 +140,12 @@ export function Shell({ children }: { children: ReactNode }) {
   }, [loc.pathname]);
 
   const linkCls = ({ isActive }: { isActive: boolean }) =>
-    `flex min-h-[44px] items-center gap-3 rounded-xl px-3 font-semibold ${isActive ? 'bg-primary-soft text-text' : 'text-muted hover:bg-surface-2 hover:text-text'}`;
+    `flex min-h-[44px] items-center gap-3 rounded-[11px] px-3 text-[15px] ${isActive ? 'bg-surface font-semibold text-text ring-1 ring-[var(--border)] [&>svg]:text-link' : 'text-text/80 hover:bg-surface/60 hover:text-text'}`;
 
   return (
     <div className="min-h-dvh">
       {/* Header */}
-      <header className="sticky top-0 z-30 border-b border-border bg-surface/95 backdrop-blur">
+      <header className="frosted sticky top-0 z-30 border-b border-border">
         <div className="flex items-center gap-3 px-4 py-2">
           <Brand />
           <div className="hidden min-w-0 flex-1 items-center gap-3 md:flex">
@@ -195,13 +195,13 @@ export function Shell({ children }: { children: ReactNode }) {
       </div>
 
       {/* Mobile bottom tabs */}
-      <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border bg-surface pb-[env(safe-area-inset-bottom)] md:hidden" aria-label={t.nav.menu}>
+      <nav className="frosted fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden" aria-label={t.nav.menu}>
         {primary.map((i) => (
           <NavLink
             key={i.to}
             to={i.to}
             end={i.end}
-            className={({ isActive }) => `flex min-h-[60px] flex-col items-center justify-center gap-0.5 text-[11px] leading-tight font-semibold ${isActive ? 'text-primary' : 'text-muted'}`}
+            className={({ isActive }) => `flex min-h-[60px] flex-col items-center justify-center gap-0.5 text-[11px] leading-tight font-semibold ${isActive ? 'text-link' : 'text-muted'}`}
           >
             <Icon name={i.icon} size={22} />
             <span className="max-w-full truncate px-1">{i.label}</span>

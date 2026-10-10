@@ -60,7 +60,7 @@ export function Broadcasts() {
       <div className="grid gap-4 lg:grid-cols-[1fr_1.1fr]">
         {/* Composer */}
         <section className="card space-y-4 p-4">
-          <h2 className="text-lg font-bold">{t.broadcasts.audience}</h2>
+          <h2 className="text-lg font-semibold">{t.broadcasts.audience}</h2>
           <p className="flex items-center gap-2 text-sm font-semibold">
             <Icon name="check" size={16} /> {t.broadcasts.consentOnly}
           </p>
@@ -133,7 +133,7 @@ export function Broadcasts() {
             <div className="flex flex-wrap items-end gap-4">
               <div>
                 <p className="text-sm font-semibold text-muted">{t.broadcasts.recipients}</p>
-                <p className="tabular text-3xl font-bold">{audience.included.length}</p>
+                <p className="tabular text-3xl font-semibold">{audience.included.length}</p>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {byLang.map(([l, n]) => (
@@ -154,7 +154,7 @@ export function Broadcasts() {
           </div>
 
           <div className="card p-4">
-            <h2 className="text-lg font-bold">{t.broadcasts.preview}</h2>
+            <h2 className="text-lg font-semibold">{t.broadcasts.preview}</h2>
             <p className="mb-3 text-sm text-muted">{t.broadcasts.previewHint}</p>
             {audience.included.length === 0 || !template ? (
               <EmptyState icon="users" title={t.broadcasts.noRecipients} />
@@ -169,7 +169,7 @@ export function Broadcasts() {
                         <p className="mb-1 text-xs font-semibold">
                           {ex.ownerName} · <span className="tag" lang={m.lang}>{t.langName[m.lang]}</span>
                         </p>
-                        <p lang={m.lang} className="rounded-2xl rounded-tl-sm bg-[var(--chat-in)] p-3 text-[15px] whitespace-pre-line shadow-sm">
+                        <p lang={m.lang} className="rounded-2xl rounded-tl-sm bg-[var(--chat-in)] p-3 text-[15px] whitespace-pre-line">
                           {m.text}
                         </p>
                       </div>
@@ -189,7 +189,7 @@ export function Broadcasts() {
 
       {last && (
         <section className="card mt-4 border-[var(--st-paid-border)] p-4">
-          <h2 className="flex items-center gap-2 text-lg font-bold">
+          <h2 className="flex items-center gap-2 text-lg font-semibold">
             <Icon name="check" /> {interpolate(t.broadcasts.sent, { n: last.recipientIds.length })}
           </h2>
           <p className="mt-1 flex flex-wrap gap-2">
@@ -204,7 +204,7 @@ export function Broadcasts() {
       )}
 
       <section className="mt-6">
-        <h2 className="mb-2 text-lg font-bold">{t.broadcasts.history}</h2>
+        <h2 className="mb-2 text-lg font-semibold">{t.broadcasts.history}</h2>
         {history.length === 0 ? (
           <EmptyState icon="megaphone" title={t.broadcasts.empty} hint={t.broadcasts.emptyHint} />
         ) : (
@@ -310,7 +310,7 @@ export function TemplateEditor({ onClose }: { onClose: () => void }) {
         {draft &&
           LANGS.map((l: Lang) => (
             <fieldset key={l} className="space-y-2 rounded-xl border border-border p-3" lang={l}>
-              <legend className="px-1 font-bold">{t.langName[l]}</legend>
+              <legend className="px-1 font-semibold">{t.langName[l]}</legend>
               <input className="input" aria-label={`${t.templates.name} (${t.langName[l]})`} value={draft.name[l]} onChange={(e) => setDraft({ ...draft, name: { ...draft.name, [l]: e.target.value } })} />
               <textarea className="input min-h-[110px]" aria-label={`${t.templates.body} (${t.langName[l]})`} value={draft.body[l]} onChange={(e) => setDraft({ ...draft, body: { ...draft.body, [l]: e.target.value } })} />
             </fieldset>

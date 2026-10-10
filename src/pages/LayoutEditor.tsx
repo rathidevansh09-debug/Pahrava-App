@@ -122,7 +122,7 @@ export function LayoutEditor() {
                     <button key={s.id} onClick={() => setEditing(s.id)} className="relative flex h-16 w-16 flex-col items-center justify-center rounded-xl border-2 border-border bg-surface-2 hover:border-primary">
                       {ty?.accent && <span className="absolute top-1 left-1 h-2.5 w-2.5 rounded-sm" style={{ background: ty.accent }} aria-hidden />}
                       {s.isCorner && <span className="absolute top-0.5 right-1 text-[10px]">◤</span>}
-                      <span className="tabular font-bold">{s.number}</span>
+                      <span className="tabular font-semibold">{s.number}</span>
                       <span className="max-w-full truncate px-1 text-[10px] text-muted">{ty?.size}</span>
                     </button>
                   );

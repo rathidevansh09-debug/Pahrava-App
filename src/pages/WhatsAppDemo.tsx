@@ -166,19 +166,19 @@ export function WhatsAppDemo() {
 
       <div className="grid items-start gap-6 lg:grid-cols-[380px_1fr]">
         {/* Phone frame */}
-        <div className="mx-auto w-full max-w-[380px] rounded-[2.5rem] border-[10px] border-[#1d1a1c] bg-[#1d1a1c] shadow-2xl">
+        <div className="mx-auto w-full max-w-[380px] rounded-[2.5rem] border-[10px] border-black bg-black shadow-[var(--overlay-shadow)]">
           <div className="overflow-hidden rounded-[1.8rem]">
-            <div className="flex items-center gap-3 bg-primary px-4 py-3 text-on-primary">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 font-bold">P</span>
+            <div className="flex items-center gap-3 bg-tile px-4 py-3 text-white">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 font-semibold">P</span>
               <div className="leading-tight">
-                <p className="font-bold">PAHRAVA Exhibitions</p>
+                <p className="font-semibold">PAHRAVA Exhibitions</p>
                 <p className="text-xs opacity-80">{t.wa.online}</p>
               </div>
             </div>
             <div ref={scroller} className="h-[520px] space-y-2 overflow-y-auto bg-[var(--chat-bg)] p-3" lang={chatLang} aria-live="polite">
               {msgs.map((m) => (
                 <div key={m.id} className={`flex ${m.from === 'me' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] rounded-2xl px-3 py-2 text-[15px] whitespace-pre-line shadow-sm ${m.from === 'me' ? 'rounded-tr-sm bg-[var(--chat-out)]' : 'rounded-tl-sm bg-[var(--chat-in)]'}`}>
+                  <div className={`max-w-[85%] rounded-2xl px-3 py-2 text-[15px] whitespace-pre-line ${m.from === 'me' ? 'rounded-tr-sm bg-[var(--chat-out)]' : 'rounded-tl-sm bg-[var(--chat-in)]'}`}>
                     {m.text.split(/(https:\/\/\S+)/).map((part, i) =>
                       part.startsWith('https://') ? (
                         <span key={i} className="break-all text-[#1a73e8] underline">
@@ -197,7 +197,7 @@ export function WhatsAppDemo() {
               <div className="flex flex-col items-start gap-1.5 pt-1">
                 {step === 'lang' &&
                   LANGS.map((l) => (
-                    <button key={l} lang={l} className="min-h-[44px] rounded-full border border-primary bg-surface px-4 font-semibold text-primary" onClick={() => chooseLang(l)}>
+                    <button key={l} lang={l} className="min-h-[44px] rounded-full border border-[var(--border)] bg-surface px-4 text-link" onClick={() => chooseLang(l)}>
                       {dictionaries[l].langName[l]}
                     </button>
                   ))}
@@ -205,7 +205,7 @@ export function WhatsAppDemo() {
                   openEvents.map((e) => {
                     const v = db.venues.find((x) => x.id === e.venueId);
                     return (
-                      <button key={e.id} className="min-h-[44px] w-full rounded-2xl border border-primary bg-surface px-4 py-2 text-left font-semibold text-primary" onClick={() => chooseEvent(e.id)}>
+                      <button key={e.id} className="min-h-[44px] w-full rounded-[18px] border border-[var(--border)] bg-surface px-4 py-2 text-left text-link" onClick={() => chooseEvent(e.id)}>
                         {e.name}
                         <span className="block text-sm font-normal text-muted">
                           {v?.name}, {v?.city} · {fmtRange(e.startDate, e.endDate, chatLang)}
@@ -221,7 +221,7 @@ export function WhatsAppDemo() {
                       <button
                         key={o.type.id}
                         disabled={o.free === 0}
-                        className="min-h-[44px] w-full rounded-2xl border border-primary bg-surface px-4 py-2 text-left font-semibold text-primary disabled:border-border disabled:text-muted"
+                        className="min-h-[44px] w-full rounded-[18px] border border-[var(--border)] bg-surface px-4 py-2 text-left text-link  disabled:text-muted"
                         onClick={() => chooseType(o.type.id)}
                       >
                         {interpolate(b.typeLine, { type: o.type.name, size: o.type.size, price: money(o.price), n: o.free })}
@@ -288,7 +288,7 @@ function MiniMap({ eventId, highlight }: { eventId: string; highlight?: string }
   const rows = Array.from(new Set(stalls.map((s) => s.row)));
   return (
     <section className="card p-3">
-      <h2 className="mb-2 px-1 font-bold">
+      <h2 className="mb-2 px-1 font-semibold">
         {t.wa.liveMap} · {ev?.name}
       </h2>
       <div role="tablist" className="mb-2 flex gap-1 overflow-x-auto">
@@ -312,7 +312,7 @@ function MiniMap({ eventId, highlight }: { eventId: string; highlight?: string }
                     <span
                       key={s.id}
                       title={`#${s.number} · ${t.status[st]}`}
-                      className={`st st-${st} tabular flex h-8 w-8 items-center justify-center rounded-md border text-[11px] font-bold ${s.id === highlight ? 'scale-125 ring-4 ring-primary' : ''} transition`}
+                      className={`st st-${st} tabular flex h-8 w-8 items-center justify-center rounded-md border text-[11px] font-semibold ${s.id === highlight ? 'scale-125 ring-4 ring-primary' : ''} transition`}
                     >
                       {s.number}
                     </span>

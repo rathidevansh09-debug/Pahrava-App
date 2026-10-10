@@ -42,11 +42,11 @@ export function ExhibitorProfile() {
       </button>
 
       {/* Contact card */}
-      <section className="card p-4">
+      <section className="card min-w-0 p-4">
         <div className="flex flex-wrap items-start gap-4">
           <Avatar name={ex.ownerName} size={64} />
           <div className="min-w-0 flex-1">
-            <h1 className="text-2xl font-bold">{ex.ownerName}</h1>
+            <h1 className="text-2xl font-semibold">{ex.ownerName}</h1>
             <p className="text-lg text-muted">{ex.businessName}</p>
             <p className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm">
               <span className="tabular font-semibold">{formatPhone(ex.phone)}</span>
@@ -110,18 +110,18 @@ export function ExhibitorProfile() {
       <div className="grid grid-cols-2 gap-3">
         <div className="card p-4">
           <p className="text-sm font-semibold text-muted">{t.exhibitors.lifetimePaid}</p>
-          <p className="tabular mt-1 text-2xl font-bold">{money(totals.paid)}</p>
+          <p className="tabular mt-1 text-2xl font-semibold">{money(totals.paid)}</p>
         </div>
         <div className={`card p-4 ${totals.outstanding > 0 ? 'bg-warn-soft' : ''}`}>
           <p className="text-sm font-semibold text-muted">{t.exhibitors.outstanding}</p>
-          <p className={`tabular mt-1 text-2xl font-bold ${totals.outstanding > 0 ? 'text-warn-text' : ''}`}>{money(totals.outstanding)}</p>
+          <p className={`tabular mt-1 text-2xl font-semibold ${totals.outstanding > 0 ? 'text-warn-text' : ''}`}>{money(totals.outstanding)}</p>
         </div>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
         {/* Events & stalls */}
-        <section className="card p-4">
-          <h2 className="mb-3 text-lg font-bold">{t.exhibitors.pastEvents}</h2>
+        <section className="card min-w-0 p-4">
+          <h2 className="mb-3 text-lg font-semibold">{t.exhibitors.pastEvents}</h2>
           {bookings.length === 0 && activeHolds.length === 0 ? (
             <p className="text-muted">{t.exhibitors.noBookings}</p>
           ) : (
@@ -133,7 +133,7 @@ export function ExhibitorProfile() {
                 return (
                   <li key={h.id}>
                     <Link to={`/e/${ev.id}/map?stall=${h.stallId}`} className="flex items-center gap-3 py-2">
-                      <span className="st st-on_hold flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 text-sm font-bold">{stallCode(db, s)}</span>
+                      <span className="st st-on_hold flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 text-sm font-semibold">{stallCode(db, s)}</span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate font-semibold">{ev.name}</span>
                         <span className="block text-sm text-muted">
@@ -154,15 +154,15 @@ export function ExhibitorProfile() {
                 return (
                   <li key={b.id}>
                     <Link to={`/e/${ev.id}/map?stall=${b.stallId}`} className={`flex items-center gap-3 py-2 ${b.status === 'cancelled' ? 'opacity-60' : ''}`}>
-                      <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 font-bold ${status ? `st st-${status}` : 'border-border'}`}>{stallCode(db, s)}</span>
+                      <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 font-semibold ${status ? `st st-${status}` : 'border-border'}`}>{stallCode(db, s)}</span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate font-semibold">{ev.name}</span>
                         <span className="block text-sm text-muted">
                           {fmtRange(ev.startDate, ev.endDate, lang)} · {ty?.name} {ty?.size}
                         </span>
                       </span>
-                      <span className="text-right">
-                        <span className="tabular block font-semibold">
+                      <span className="shrink-0 text-right">
+                        <span className="tabular block text-sm font-semibold">
                           {money(paid)} / {money(b.total)}
                         </span>
                         {status ? <StatusBadge status={status} short className="mt-0.5 text-xs" /> : <span className="tag">{t.exhibitors.cancelled}</span>}
@@ -176,8 +176,8 @@ export function ExhibitorProfile() {
         </section>
 
         {/* Timeline */}
-        <section className="card p-4">
-          <h2 className="mb-3 text-lg font-bold">{t.exhibitors.timeline}</h2>
+        <section className="card min-w-0 p-4">
+          <h2 className="mb-3 text-lg font-semibold">{t.exhibitors.timeline}</h2>
           {timeline.length === 0 ? <p className="text-muted">{t.exhibitors.noActivity}</p> : <Timeline items={timeline} />}
         </section>
       </div>

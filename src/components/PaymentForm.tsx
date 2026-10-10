@@ -37,7 +37,7 @@ export function PaymentForm({ bookingId, due, onDone, onCancel }: { bookingId: s
     >
       <Field label={t.payment.amount} error={err} htmlFor="pay-amt">
         <div className="flex gap-2">
-          <input id="pay-amt" data-autofocus className="input tabular text-lg font-bold" inputMode="numeric" value={amount} aria-invalid={!!err} onChange={(e) => { setAmount(e.target.value); setErr(undefined); }} />
+          <input id="pay-amt" data-autofocus className="input tabular text-lg font-semibold" inputMode="numeric" value={amount} aria-invalid={!!err} onChange={(e) => { setAmount(e.target.value); setErr(undefined); }} />
           <button type="button" className="btn btn-sm shrink-0" onClick={() => setAmount(String(due))}>
             {t.payment.payFull}
           </button>

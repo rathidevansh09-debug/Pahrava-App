@@ -31,7 +31,7 @@ export function FollowUps() {
           {groups.map(([title, list, tone]) =>
             list.length ? (
               <section key={title}>
-                <h2 className={`mb-2 font-bold ${tone}`}>
+                <h2 className={`mb-2 font-semibold ${tone}`}>
                   {title} ({list.length})
                 </h2>
                 <ul className="card divide-y divide-border">

@@ -1,95 +1,114 @@
 @import 'tailwindcss';
-@import '@fontsource/noto-sans/400.css';
-@import '@fontsource/noto-sans/600.css';
-@import '@fontsource/noto-sans/700.css';
+/* Latin text uses the system font (SF Pro on Apple devices). Devanagari is bundled so Marathi/Hindi render consistently. */
 @import '@fontsource/noto-sans-devanagari/400.css';
 @import '@fontsource/noto-sans-devanagari/600.css';
 @import '@fontsource/noto-sans-devanagari/700.css';
 
 @custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 
+/*
+ * Design tokens — Apple-style system (see DESIGN-apple.md):
+ * parchment canvas, white surfaces with hairlines, one Action Blue accent,
+ * no shadows on chrome, pill actions.
+ */
 :root {
-  --bg: #f6f4f2;
-  --surface: #ffffff;
-  --surface-2: #f1eeeb;
-  --text: #1d1a1c;
-  --muted: #5d5760;
-  --border: #ddd6d3;
-  --primary: #7a1f5c;
-  --primary-hover: #63174a;
+  --bg: #f5f5f7; /* canvas-parchment */
+  --surface: #ffffff; /* canvas */
+  --surface-2: #f5f5f7; /* parchment wells inside white cards */
+  --surface-pearl: #fafafc;
+  --text: #1d1d1f; /* ink */
+  --muted: #6e6e73; /* ink-muted (AA on white and parchment) */
+  --border: #e0e0e0; /* hairline */
+  --divider: #f0f0f0;
+  --primary: #0066cc; /* Action Blue — every interactive element */
+  --primary-hover: #0058b0;
+  --link: #0066cc;
   --on-primary: #ffffff;
-  --primary-soft: #f5e6ef;
-  --danger: #b3261e;
-  --danger-soft: #fbe9e7;
-  --warn-soft: #fff4d6;
-  --warn-text: #6b4a00;
-  --focus: #1a73e8;
+  --primary-soft: rgb(0 102 204 / 0.08);
+  --danger: #d70015;
+  --danger-soft: #fff0f1;
+  --warn-soft: #fff6e5;
+  --warn-text: #8a4b00;
+  --focus: #0071e3; /* primary-focus */
+  --tile: #272729; /* dark product tile */
+  --tile-text: #ffffff;
+  --tile-muted: #cccccc;
+  --chrome: rgb(245 245 247 / 0.8); /* frosted sub-nav */
 
-  --st-available-bg: #eceef1;
-  --st-available-border: #8e95a1;
-  --st-available-text: #262a31;
-  --st-hold-bg: #ffe7a8;
-  --st-hold-border: #b57b00;
-  --st-hold-text: #4f3500;
-  --st-booked-bg: #d5e4ff;
-  --st-booked-border: #2d66c4;
-  --st-booked-text: #0b3473;
-  --st-partly-bg: #d4f1cb;
-  --st-partly-border: #3f9a45;
-  --st-partly-text: #1a501d;
-  --st-paid-bg: #1d6e31;
-  --st-paid-border: #124d21;
+  /* Stall status — Apple system palette tints (data colours, not actions) */
+  --st-available-bg: #ffffff;
+  --st-available-border: #c7c7cc;
+  --st-available-text: #1d1d1f;
+  --st-hold-bg: #fff1d6;
+  --st-hold-border: #ff9500;
+  --st-hold-text: #7a4100;
+  --st-booked-bg: #e7e6fb;
+  --st-booked-border: #5856d6;
+  --st-booked-text: #2c2a8a;
+  --st-partly-bg: #def5e3;
+  --st-partly-border: #34c759;
+  --st-partly-text: #1b5e2b;
+  --st-paid-bg: #248a3d;
+  --st-paid-border: #1a6b2f;
   --st-paid-text: #ffffff;
 
-  --chat-bg: #efe7dd;
+  --chat-bg: #f5f5f7;
   --chat-in: #ffffff;
-  --chat-out: #e3f1d7;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.06), 0 4px 16px rgb(0 0 0 / 0.06);
+  --chat-out: #dcebfb;
+  --shadow: none;
+  --overlay-shadow: 0 20px 60px rgb(0 0 0 / 0.18);
   color-scheme: light;
 }
 
 [data-theme='dark'] {
-  --bg: #141214;
-  --surface: #1e1b1e;
-  --surface-2: #29252a;
-  --text: #f1edf0;
-  --muted: #b3abb2;
-  --border: #3b353b;
-  --primary: #e486c1;
-  --primary-hover: #f0a3d2;
-  --on-primary: #2a0b1f;
-  --primary-soft: #3a2232;
-  --danger: #ff8a80;
-  --danger-soft: #3d1d1b;
-  --warn-soft: #3b2f10;
-  --warn-text: #ffd977;
-  --focus: #8ab4f8;
+  --bg: #000000;
+  --surface: #1d1d1f;
+  --surface-2: #2a2a2c;
+  --surface-pearl: #272729;
+  --text: #f5f5f7;
+  --muted: #a1a1a6;
+  --border: #38383a;
+  --divider: #2c2c2e;
+  --primary: #0071e3;
+  --primary-hover: #0077ed;
+  --link: #2997ff; /* Sky Link Blue on dark */
+  --on-primary: #ffffff;
+  --primary-soft: rgb(41 151 255 / 0.16);
+  --danger: #ff453a;
+  --danger-soft: #3a1513;
+  --warn-soft: #3a2a0c;
+  --warn-text: #ffd60a;
+  --focus: #2997ff;
+  --tile: #272729;
+  --tile-text: #ffffff;
+  --tile-muted: #cccccc;
+  --chrome: rgb(29 29 31 / 0.72);
 
-  --st-available-bg: #2a2d33;
-  --st-available-border: #7b828e;
-  --st-available-text: #e7e9ec;
-  --st-hold-bg: #4d3a07;
-  --st-hold-border: #e0a92a;
-  --st-hold-text: #ffe29a;
-  --st-booked-bg: #183462;
-  --st-booked-border: #6c9df0;
-  --st-booked-text: #cfe0ff;
-  --st-partly-bg: #1f4423;
-  --st-partly-border: #6cc171;
-  --st-partly-text: #ccf3c6;
-  --st-paid-bg: #2f8f47;
-  --st-paid-border: #7fd895;
+  --st-available-bg: #2a2a2c;
+  --st-available-border: #636366;
+  --st-available-text: #f5f5f7;
+  --st-hold-bg: #4a3000;
+  --st-hold-border: #ff9f0a;
+  --st-hold-text: #ffd59a;
+  --st-booked-bg: #26245e;
+  --st-booked-border: #7d7aff;
+  --st-booked-text: #d6d5ff;
+  --st-partly-bg: #133a1d;
+  --st-partly-border: #30d158;
+  --st-partly-text: #b8f0c6;
+  --st-paid-bg: #248a3d;
+  --st-paid-border: #30d158;
   --st-paid-text: #ffffff;
 
-  --chat-bg: #1b1f1d;
-  --chat-in: #2a2e2c;
-  --chat-out: #2c4430;
-  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 16px rgb(0 0 0 / 0.3);
+  --chat-bg: #000000;
+  --chat-in: #2a2a2c;
+  --chat-out: #0a3a6b;
+  --overlay-shadow: 0 20px 60px rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
 
 @theme inline {
-  --font-sans: 'Noto Sans', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, system-ui, 'SF Pro Text', 'Segoe UI', Roboto, 'Noto Sans Devanagari', sans-serif;
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -99,10 +118,12 @@
   --color-primary: var(--primary);
   --color-primary-soft: var(--primary-soft);
   --color-on-primary: var(--on-primary);
+  --color-link: var(--link);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
   --color-warn-soft: var(--warn-soft);
   --color-warn-text: var(--warn-text);
+  --color-tile: var(--tile);
 }
 
 html,
@@ -112,40 +133,67 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.47;
 }
 
+/* Apple body: 17px with slightly tightened tracking (Latin only — never tighten Devanagari). */
+body {
+  font-size: 17px;
+}
+:lang(en) body,
+:lang(en) .tracking-apple {
+  letter-spacing: -0.022em;
+}
 :lang(mr),
 :lang(hi) {
   line-height: 1.6;
 }
 
-*:focus-visible {
-  outline: 3px solid var(--focus);
-  outline-offset: 2px;
+h1,
+h2,
+h3 {
+  font-weight: 600;
+}
+:lang(en) h1 {
+  letter-spacing: -0.02em;
+}
+
+@layer base {
+  /* In the base layer so dialogs/sheets (outline-none) can opt out */
+  *:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
 }
 
 @layer components {
+  /* Buttons: pill grammar, one blue, press = scale(0.95) */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     min-height: 44px;
-    padding: 0.5rem 1rem;
-    border-radius: 0.75rem;
-    font-weight: 600;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-size: 15px;
+    font-weight: 400;
     border: 1px solid var(--border);
     background: var(--surface);
-    color: var(--text);
-    transition: background 0.15s, border-color 0.15s;
+    color: var(--link);
+    transition:
+      transform 0.12s ease,
+      background 0.15s;
     white-space: nowrap;
   }
   .btn:hover {
-    background: var(--surface-2);
+    background: var(--surface-pearl);
+  }
+  .btn:active:not(:disabled) {
+    transform: scale(0.95);
   }
   .btn:disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
   }
   .btn-primary {
@@ -158,7 +206,7 @@ body {
   }
   .btn-danger {
     color: var(--danger);
-    border-color: color-mix(in srgb, var(--danger) 45%, transparent);
+    border-color: color-mix(in srgb, var(--danger) 35%, transparent);
   }
   .btn-danger:hover {
     background: var(--danger-soft);
@@ -168,17 +216,14 @@ body {
     border-color: var(--danger);
     color: #fff;
   }
-  [data-theme='dark'] .btn-danger-solid {
-    color: #2b0b09;
-  }
   .btn-ghost {
     background: transparent;
     border-color: transparent;
   }
   .btn-sm {
     min-height: 36px;
-    padding: 0.25rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.25rem 0.875rem;
+    font-size: 14px;
   }
   .icon-btn {
     display: inline-flex;
@@ -186,19 +231,33 @@ body {
     justify-content: center;
     min-width: 44px;
     min-height: 44px;
-    border-radius: 0.75rem;
+    border-radius: 9999px;
+    color: var(--text);
+    transition: transform 0.12s ease;
   }
   .icon-btn:hover {
     background: var(--surface-2);
   }
+  .icon-btn:active:not(:disabled) {
+    transform: scale(0.92);
+  }
+  .icon-btn:disabled {
+    opacity: 0.35;
+  }
+
   .input {
     width: 100%;
     min-height: 44px;
-    padding: 0.5rem 0.75rem;
-    border-radius: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    border-radius: 11px;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text);
+    font-size: 16px; /* ≥16px stops iOS zooming on focus */
+  }
+  .input[type='search'] {
+    border-radius: 9999px;
+    padding-left: 1.25rem;
   }
   .input::placeholder {
     color: var(--muted);
@@ -211,33 +270,48 @@ body {
   }
   .label {
     display: block;
-    font-size: 0.875rem;
+    font-size: 14px;
     font-weight: 600;
     color: var(--muted);
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.3rem;
   }
+
+  /* Utility card: white, hairline, 18px, no shadow */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 1rem;
-    box-shadow: var(--shadow);
+    border-radius: 18px;
   }
+  /* Dark product tile — used for the dashboard money summary */
+  .tile-dark {
+    background: var(--tile);
+    color: var(--tile-text);
+    border-radius: 18px;
+  }
+
+  /* Option chips: pill, selected = 2px focus-blue ring (configurator style) */
   .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
     min-height: 36px;
-    padding: 0.25rem 0.75rem;
+    padding: 0.25rem 0.875rem;
     border-radius: 999px;
     border: 1px solid var(--border);
     background: var(--surface);
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text);
+    transition: transform 0.12s ease;
+  }
+  .chip:active {
+    transform: scale(0.95);
   }
   .chip[aria-pressed='true'] {
-    background: var(--primary-soft);
-    border-color: var(--primary);
+    border-color: var(--focus);
+    box-shadow: inset 0 0 0 1px var(--focus);
     color: var(--text);
+    font-weight: 600;
   }
   .tag {
     display: inline-flex;
@@ -245,12 +319,18 @@ body {
     padding: 0.125rem 0.5rem;
     border-radius: 999px;
     background: var(--surface-2);
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 400;
     color: var(--muted);
   }
   .tabular {
     font-variant-numeric: tabular-nums;
+  }
+  /* Frosted chrome (sticky header, bottom tab bar) */
+  .frosted {
+    background: var(--chrome);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
   }
 
   .st-available {

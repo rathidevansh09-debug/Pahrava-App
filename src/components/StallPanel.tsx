@@ -233,11 +233,11 @@ export function StallPanel({ stallId, preselectId, onClose }: { stallId: string;
             <div className="grid grid-cols-2 gap-2">
               <div className="rounded-xl bg-surface-2 p-3">
                 <p className="text-sm text-muted">{t.stall.paid}</p>
-                <p className="tabular text-xl font-bold">{money(st.paid)}</p>
+                <p className="tabular text-xl font-semibold">{money(st.paid)}</p>
               </div>
               <div className={`rounded-xl p-3 ${st.due > 0 ? 'bg-warn-soft text-warn-text' : 'bg-surface-2'}`}>
                 <p className="text-sm">{t.stall.due}</p>
-                <p className="tabular text-xl font-bold">{money(st.due)}</p>
+                <p className="tabular text-xl font-semibold">{money(st.due)}</p>
               </div>
             </div>
           </div>
@@ -323,7 +323,7 @@ export function StallPanel({ stallId, preselectId, onClose }: { stallId: string;
         )}
         {mode === 'pay' && st.booking && (
           <div className="rounded-2xl border border-border p-3">
-            <h3 className="mb-2 font-bold">{t.payment.title}</h3>
+            <h3 className="mb-2 font-semibold">{t.payment.title}</h3>
             <PaymentForm bookingId={st.booking.id} due={st.due} onDone={() => setMode('idle')} onCancel={() => setMode('idle')} />
           </div>
         )}
@@ -331,14 +331,14 @@ export function StallPanel({ stallId, preselectId, onClose }: { stallId: string;
         {/* Payment history */}
         {st.booking && (
           <div>
-            <h3 className="mb-2 font-bold">{t.stall.payments}</h3>
+            <h3 className="mb-2 font-semibold">{t.stall.payments}</h3>
             {payments.length === 0 ? (
               <p className="text-muted">{t.stall.noPayments}</p>
             ) : (
               <ul className="divide-y divide-border rounded-xl border border-border">
                 {payments.map((p) => (
                   <li key={p.id} className="flex items-center gap-3 p-3">
-                    <span className="tabular font-bold">{money(p.amount)}</span>
+                    <span className="tabular font-semibold">{money(p.amount)}</span>
                     <span className="tag">{t.payMode[p.mode]}</span>
                     <span className="min-w-0 flex-1 truncate text-sm text-muted">{p.ref}</span>
                     <span className="text-sm text-muted">{fmtDate(p.date, lang, { day: 'numeric', month: 'short' })}</span>
@@ -394,7 +394,7 @@ function ExhibitorCard({ ex, t }: { ex: Exhibitor; t: Dict }) {
     <div className="flex items-center gap-3 rounded-2xl border border-border p-3">
       <Avatar name={ex.ownerName} />
       <div className="min-w-0 flex-1">
-        <p className="truncate font-bold">{ex.ownerName}</p>
+        <p className="truncate font-semibold">{ex.ownerName}</p>
         <p className="truncate text-sm text-muted">
           {ex.businessName} · <span className="tabular">{formatPhone(ex.phone)}</span>
         </p>
@@ -408,7 +408,7 @@ function ExhibitorCard({ ex, t }: { ex: Exhibitor; t: Dict }) {
 
 function PriceBreakdown({ t, q, reason, partnerName }: { t: Dict; q: { basePrice: number; cornerAmt: number; partnerAmt: number; discount: number; total: number }; reason?: string; partnerName?: string }) {
   const row = (label: string, v: string, strong = false) => (
-    <div className={`flex justify-between ${strong ? 'border-t border-border pt-1 font-bold' : 'text-sm'}`}>
+    <div className={`flex justify-between ${strong ? 'border-t border-border pt-1 font-semibold' : 'text-sm'}`}>
       <span>{label}</span>
       <span className="tabular">{v}</span>
     </div>

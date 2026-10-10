@@ -133,7 +133,7 @@ export function Exhibitors() {
         <div className="card overflow-hidden">
           {groups.map(([letter, items]) => (
             <section key={letter}>
-              <h2 className="sticky top-0 bg-surface-2 px-4 py-1 text-sm font-bold text-muted">{letter}</h2>
+              <h2 className="sticky top-0 bg-surface-2 px-4 py-1 text-sm font-semibold text-muted">{letter}</h2>
               <ul className="divide-y divide-border">
                 {items.map((e) => (
                   <li key={e.id}>
@@ -256,7 +256,7 @@ function CsvImport({ onClose }: { onClose: () => void }) {
         {file && (
           <>
             <div>
-              <h3 className="mb-2 font-bold">{t.csv.mapping}</h3>
+              <h3 className="mb-2 font-semibold">{t.csv.mapping}</h3>
               <div className="grid gap-2 sm:grid-cols-2">
                 {IMPORT_FIELDS.map((f) => (
                   <Field key={f} label={FIELD_LABEL(t, f)}>

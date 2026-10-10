@@ -26,7 +26,7 @@ export function Settings() {
       <PageHeader title={t.settings.title} />
 
       <section className="card space-y-3 p-4">
-        <h2 className="text-lg font-bold">{t.settings.general}</h2>
+        <h2 className="text-lg font-semibold">{t.settings.general}</h2>
         <Field label={t.settings.defaultHold}>
           <input
             className="input tabular w-32"
@@ -44,7 +44,7 @@ export function Settings() {
 
       <section className="card space-y-3 p-4">
         <div className="flex flex-wrap items-center gap-2">
-          <h2 className="flex-1 text-lg font-bold">{t.settings.stallTypes}</h2>
+          <h2 className="flex-1 text-lg font-semibold">{t.settings.stallTypes}</h2>
           <select className="input w-auto" value={eventId} onChange={(e) => setEventId(e.target.value)} aria-label={t.common.selectEvent}>
             {db.events.map((e) => (
               <option key={e.id} value={e.id}>
@@ -67,7 +67,7 @@ export function Settings() {
       </section>
 
       <section className="card space-y-3 p-4">
-        <h2 className="text-lg font-bold">{t.settings.tags}</h2>
+        <h2 className="text-lg font-semibold">{t.settings.tags}</h2>
         <div className="flex flex-wrap gap-2">
           {DEFAULT_TAGS.map((x) => (
             <span key={x} className="tag text-sm">
@@ -111,14 +111,14 @@ export function Settings() {
       </section>
 
       <section className="card flex flex-wrap items-center gap-3 p-4">
-        <h2 className="flex-1 text-lg font-bold">{t.settings.templates}</h2>
+        <h2 className="flex-1 text-lg font-semibold">{t.settings.templates}</h2>
         <button className="btn" onClick={() => setTemplates(true)}>
           <Icon name="edit" size={16} /> {t.broadcasts.editTemplates}
         </button>
       </section>
 
       <section className="card space-y-2 border-[color-mix(in_srgb,var(--danger)_40%,transparent)] p-4">
-        <h2 className="text-lg font-bold">{t.settings.reset}</h2>
+        <h2 className="text-lg font-semibold">{t.settings.reset}</h2>
         <p className="text-muted">{t.settings.resetHint}</p>
         <button className="btn btn-danger" onClick={() => setResetting(true)}>
           <Icon name="refresh" /> {t.settings.reset}
@@ -126,7 +126,7 @@ export function Settings() {
       </section>
 
       <section className="card p-4">
-        <h2 className="text-lg font-bold">{t.settings.about}</h2>
+        <h2 className="text-lg font-semibold">{t.settings.about}</h2>
         <p className="text-muted">{t.settings.aboutBody}</p>
       </section>
 

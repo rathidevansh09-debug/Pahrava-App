@@ -108,7 +108,7 @@ export function Ledger() {
                   return (
                     <tr key={r.b.id} className={urgent ? 'bg-warn-soft' : ''}>
                       <td className="p-3">
-                        <Link to={`/e/${eventId}/map?stall=${r.stall.id}`} className="font-bold underline-offset-2 hover:underline">
+                        <Link to={`/e/${eventId}/map?stall=${r.stall.id}`} className="font-semibold underline-offset-2 hover:underline">
                           #{r.code}
                         </Link>
                         <span className="block text-xs text-muted">
@@ -129,7 +129,7 @@ export function Ledger() {
                         {r.b.discount > 0 && <span className="block text-xs text-muted">{interpolate(t.ledger.discountNote, { amount: money(r.b.discount), reason: r.b.discountReason ?? '' })}</span>}
                       </td>
                       <td className="tabular p-3 text-right">{money(r.paid)}</td>
-                      <td className={`tabular p-3 text-right font-bold ${r.due > 0 ? 'text-warn-text' : ''}`}>
+                      <td className={`tabular p-3 text-right font-semibold ${r.due > 0 ? 'text-warn-text' : ''}`}>
                         {urgent && <Icon name="alert" size={14} className="mr-1 inline" label={interpolate(t.ledger.dueSoon, { n: event.dueWarningDays })} />}
                         {money(r.due)}
                       </td>
@@ -144,7 +144,7 @@ export function Ledger() {
                   );
                 })}
               </tbody>
-              <tfoot className="border-t-2 border-border font-bold">
+              <tfoot className="border-t-2 border-border font-semibold">
                 <tr>
                   <td className="p-3" colSpan={3}>
                     {t.ledger.totals} ({shown.length})
@@ -163,15 +163,15 @@ export function Ledger() {
             <div className="card grid grid-cols-3 gap-2 p-3 text-center">
               <div>
                 <p className="text-xs text-muted">{t.ledger.total}</p>
-                <p className="tabular font-bold">{money(totals.total)}</p>
+                <p className="tabular font-semibold">{money(totals.total)}</p>
               </div>
               <div>
                 <p className="text-xs text-muted">{t.ledger.paid}</p>
-                <p className="tabular font-bold">{money(totals.paid)}</p>
+                <p className="tabular font-semibold">{money(totals.paid)}</p>
               </div>
               <div>
                 <p className="text-xs text-muted">{t.ledger.due}</p>
-                <p className="tabular font-bold text-warn-text">{money(totals.due)}</p>
+                <p className="tabular font-semibold text-warn-text">{money(totals.due)}</p>
               </div>
             </div>
             {shown.map((r) => {
@@ -179,7 +179,7 @@ export function Ledger() {
               return (
                 <div key={r.b.id} className={`card p-3 ${urgent ? 'bg-warn-soft' : ''}`}>
                   <div className="flex items-start gap-3">
-                    <span className={`st st-${r.status} flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 text-sm font-bold`}>{r.code}</span>
+                    <span className={`st st-${r.status} flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 text-sm font-semibold`}>{r.code}</span>
                     <div className="min-w-0 flex-1">
                       <Link to={`/exhibitors/${r.ex?.id}`} className="block truncate font-semibold">
                         {r.ex?.ownerName}
@@ -191,7 +191,7 @@ export function Ledger() {
                       <p className="tabular text-sm text-muted">
                         {money(r.paid)} / {money(r.b.total)}
                       </p>
-                      <p className={`tabular text-lg font-bold ${r.due > 0 ? 'text-warn-text' : ''}`}>{money(r.due)}</p>
+                      <p className={`tabular text-lg font-semibold ${r.due > 0 ? 'text-warn-text' : ''}`}>{money(r.due)}</p>
                     </div>
                   </div>
                   {r.due > 0 && event.status !== 'completed' && (

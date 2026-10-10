@@ -38,11 +38,11 @@ export function VisitorRegister() {
 
   return (
     <div className="min-h-dvh bg-bg">
-      <div className="bg-primary px-4 pt-6 pb-16 text-on-primary">
+      <div className="bg-tile px-4 pt-8 pb-16 text-white">
         <div className="mx-auto flex max-w-lg items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/20 text-xl font-bold">P</span>
+          <span className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-white text-xl font-semibold text-black">P</span>
           <div className="flex-1">
-            <p className="text-xl font-bold">PAHRAVA</p>
+            <p className="text-xl font-semibold">PAHRAVA</p>
             <p className="text-sm opacity-90">Exhibition & Lifestyle</p>
           </div>
           <div className="rounded-xl bg-surface p-0.5">
@@ -57,7 +57,7 @@ export function VisitorRegister() {
               <span className="st st-fully_paid mx-auto flex h-16 w-16 items-center justify-center rounded-full">
                 <Icon name="check" size={32} />
               </span>
-              <p className="text-xl font-bold">{interpolate(t.visitors.thanks, { name: done, event: ev?.name ?? '' })}</p>
+              <p className="text-xl font-semibold">{interpolate(t.visitors.thanks, { name: done, event: ev?.name ?? '' })}</p>
               <button
                 className="btn btn-primary"
                 onClick={() => {
@@ -78,7 +78,7 @@ export function VisitorRegister() {
               }}
             >
               <div>
-                <h1 className="text-2xl font-bold">{t.visitors.title}</h1>
+                <h1 className="text-2xl font-semibold">{t.visitors.title}</h1>
                 <p className="text-muted">{t.visitors.subtitle}</p>
               </div>
               <Field label={t.visitors.event}>

@@ -20,8 +20,8 @@ export function StallTile({ stall, state, dim, onClick, now, accent }: { stall: 
       title={state.exhibitor ? `${state.exhibitor.ownerName} · ${state.exhibitor.businessName}` : undefined}
     >
       {accent && <span className="absolute top-1 left-1 h-2.5 w-2.5 rounded-sm border border-white/60" style={{ background: accent }} aria-hidden />}
-      {stall.isCorner && <span className="absolute top-0.5 right-1 text-[10px] font-bold opacity-80" aria-hidden>◤</span>}
-      <span className="tabular text-xl leading-none font-bold">{stall.number}</span>
+      {stall.isCorner && <span className="absolute top-0.5 right-1 text-[10px] font-semibold opacity-80" aria-hidden>◤</span>}
+      <span className="tabular text-xl leading-none font-semibold">{stall.number}</span>
       <span className="mt-1 flex items-center gap-0.5 text-[11px] leading-none font-semibold">
         <Icon name={`st-${state.status}`} size={12} />
         {state.status === 'on_hold' && state.hold ? fmtCountdown(state.hold.expiresAt - now) : t.statusShort[state.status]}
@@ -170,7 +170,7 @@ export function StallMap() {
                   if (firstFloor) setFloorId(firstFloor);
                 } else setStatus('');
               }}
-              className={`card flex min-w-[150px] shrink-0 flex-col items-start px-3 py-2 text-left ${on ? 'border-primary ring-2 ring-primary' : ''}`}
+              className={`card flex min-w-[150px] shrink-0 flex-col items-start px-3 py-2 text-left ${on ? 'border-[var(--focus)] ring-1 ring-[var(--focus)]' : ''}`}
             >
               <span className="flex items-center gap-1.5 text-sm font-semibold">
                 {ty.accent && <span className="h-2.5 w-2.5 rounded-sm" style={{ background: ty.accent }} aria-hidden />}
@@ -179,7 +179,7 @@ export function StallMap() {
               <span className="text-xs text-muted">
                 {ty.size} · {money(ty.basePrice)}
               </span>
-              <span className={`mt-1 text-sm font-bold ${free ? '' : 'text-muted'}`}>{interpolate(t.map.freeOfType, { n: free })}</span>
+              <span className={`mt-1 text-sm font-semibold ${free ? '' : 'text-muted'}`}>{interpolate(t.map.freeOfType, { n: free })}</span>
             </button>
           );
         })}
@@ -258,7 +258,7 @@ export function StallMap() {
             />
             <div className="ml-1 inline-flex rounded-xl bg-surface-2 p-1" role="group">
               <button className="icon-btn !min-h-[36px] !min-w-[36px]" aria-label={t.plan.zoomOut} disabled={zoom <= 1} onClick={() => setZoom((z) => Math.max(1, z / 1.5))}>
-                <span className="text-xl leading-none font-bold">−</span>
+                <span className="text-xl leading-none font-semibold">−</span>
               </button>
               <button className="icon-btn !min-h-[36px] !min-w-[36px] text-xs font-semibold" aria-label={t.plan.fit} onClick={() => setZoom(1)}>
                 {Math.round(zoom * 100)}%
@@ -321,7 +321,7 @@ export function StallMap() {
 
           {/* Free stalls on this floor, grouped by type — quick answer during a call */}
           <aside className="card p-4">
-            <h2 className="mb-2 font-bold">{interpolate(t.plan.freeOnFloor, { floor: floor?.name ?? '' })}</h2>
+            <h2 className="mb-2 font-semibold">{interpolate(t.plan.freeOnFloor, { floor: floor?.name ?? '' })}</h2>
             {freeByType.length === 0 ? (
               <p className="text-muted">{t.plan.noFree}</p>
             ) : (
@@ -334,7 +334,7 @@ export function StallMap() {
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {list.map((s) => (
-                        <button key={s.id} className="st st-available tabular min-h-[40px] min-w-[44px] rounded-lg border px-2 text-sm font-bold" onClick={() => setOpen(s.id)}>
+                        <button key={s.id} className="st st-available tabular min-h-[40px] min-w-[44px] rounded-lg border px-2 text-sm font-semibold" onClick={() => setOpen(s.id)}>
                           {s.number}
                           {s.isCorner && <span className="ml-0.5 text-[10px] opacity-70">◥</span>}
                         </button>

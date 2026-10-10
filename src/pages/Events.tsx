@@ -26,7 +26,7 @@ export function Events() {
         <Link to={`/e/${e.id}`} onClick={() => setPrefs({ eventId: e.id })} className="block p-4 hover:bg-surface-2">
           <div className="flex flex-wrap items-start gap-2">
             <div className="min-w-0 flex-1">
-              <p className="text-lg font-bold">{e.name}</p>
+              <p className="text-lg font-semibold">{e.name}</p>
               <p className="text-muted">
                 {v?.name}, {v?.city} · {fmtRange(e.startDate, e.endDate, lang)}
               </p>
@@ -70,12 +70,12 @@ export function Events() {
       ) : (
         <div className="space-y-6">
           <section>
-            <h2 className="mb-2 font-bold text-muted">{t.events.upcoming}</h2>
+            <h2 className="mb-2 font-semibold text-muted">{t.events.upcoming}</h2>
             <ul className="grid gap-3 lg:grid-cols-2">{upcoming.map(card)}</ul>
           </section>
           {past.length > 0 && (
             <section>
-              <h2 className="mb-2 font-bold text-muted">{t.events.past}</h2>
+              <h2 className="mb-2 font-semibold text-muted">{t.events.past}</h2>
               <ul className="grid gap-3 lg:grid-cols-2">{past.map(card)}</ul>
             </section>
           )}

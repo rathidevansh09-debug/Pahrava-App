@@ -67,39 +67,42 @@ export function Dashboard() {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         <Stat label={t.dashboard.totalStalls} value={s.total} />
         {STALL_STATUSES.map((st) => (
-          <Link key={st} to={`/e/${eventId}/map?status=${st}`} className="card block p-4 hover:border-primary">
+          <Link key={st} to={`/e/${eventId}/map?status=${st}`} className="card block p-4 hover:border-[var(--muted)]">
             <span className={`st st-${st} inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-semibold`}>
               <Icon name={`st-${st}`} size={14} /> {t.status[st]}
             </span>
-            <p className="tabular mt-2 text-2xl font-bold">{s.counts[st]}</p>
+            <p className="tabular mt-2 text-2xl font-semibold">{s.counts[st]}</p>
           </Link>
         ))}
       </div>
 
-      {/* Money */}
-      <div className="grid gap-3 sm:grid-cols-3">
-        <Stat label={t.dashboard.expected} value={money(s.expected)} />
-        <div className="card p-4">
-          <p className="text-sm font-semibold text-muted">{t.dashboard.collected}</p>
-          <p className="tabular mt-1 text-2xl font-bold">{money(s.collected)}</p>
-          <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-surface-2" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={t.dashboard.collected}>
-            <div className="st st-fully_paid h-full" style={{ width: `${pct}%` }} />
-          </div>
-          <p className="mt-1 text-sm text-muted">{interpolate(t.dashboard.collectedOf, { pct })}</p>
+      {/* Money — dark tile (the surface change is the divider; no chrome) */}
+      <section className="tile-dark grid gap-6 p-6 sm:grid-cols-3 sm:p-8">
+        <div>
+          <p className="text-sm text-[var(--tile-muted)]">{t.dashboard.expected}</p>
+          <p className="tabular mt-1 text-[34px] leading-tight font-semibold">{money(s.expected)}</p>
         </div>
-        <Link to={`/e/${eventId}/ledger`} className="card block p-4 hover:border-primary">
-          <p className="text-sm font-semibold text-muted">{t.dashboard.outstanding}</p>
-          <p className="tabular mt-1 text-2xl font-bold text-warn-text">{money(s.outstanding)}</p>
-          <p className="mt-1 flex items-center gap-1 text-sm font-semibold">
+        <div>
+          <p className="text-sm text-[var(--tile-muted)]">{t.dashboard.collected}</p>
+          <p className="tabular mt-1 text-[34px] leading-tight font-semibold">{money(s.collected)}</p>
+          <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/15" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label={t.dashboard.collected}>
+            <div className="h-full rounded-full bg-[#30d158]" style={{ width: `${pct}%` }} />
+          </div>
+          <p className="mt-1.5 text-sm text-[var(--tile-muted)]">{interpolate(t.dashboard.collectedOf, { pct })}</p>
+        </div>
+        <div>
+          <p className="text-sm text-[var(--tile-muted)]">{t.dashboard.outstanding}</p>
+          <p className="tabular mt-1 text-[34px] leading-tight font-semibold text-[#ffd60a]">{money(s.outstanding)}</p>
+          <Link to={`/e/${eventId}/ledger`} className="mt-2 inline-flex min-h-[44px] items-center gap-1 text-[#2997ff]">
             {t.dashboard.openLedger} <Icon name="chevronRight" size={16} />
-          </p>
-        </Link>
-      </div>
+          </Link>
+        </div>
+      </section>
 
       <div className="grid gap-5 lg:grid-cols-2">
         {/* Expiring holds */}
-        <section className="card p-4">
-          <h2 className="mb-3 flex items-center gap-2 text-lg font-bold">
+        <section className="card min-w-0 p-4">
+          <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
             <Icon name="clock" /> {t.dashboard.expiringSoon}
             {expiring.length > 0 && <span className="st st-on_hold rounded-full border px-2 text-sm">{expiring.length}</span>}
           </h2>
@@ -114,14 +117,14 @@ export function Dashboard() {
                 return (
                   <li key={h.id}>
                     <Link to={`/e/${eventId}/map?stall=${h.stallId}`} className="flex items-center gap-3 py-2">
-                      <span className="st st-on_hold flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 text-base font-bold">{stallCode(db, stall)}</span>
+                      <span className="st st-on_hold flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border-2 text-base font-semibold">{stallCode(db, stall)}</span>
                       <span className="min-w-0 flex-1">
                         <span className="block truncate font-semibold">{ex?.ownerName} · {ex?.businessName}</span>
                         <span className="block text-sm text-muted">
                           {type?.name} {type?.size} · {fmtDateTime(h.expiresAt, lang)}
                         </span>
                       </span>
-                      <span className="tabular rounded-lg bg-warn-soft px-2 py-1 font-bold text-warn-text">{fmtCountdown(h.expiresAt - now)}</span>
+                      <span className="tabular rounded-lg bg-warn-soft px-2 py-1 font-semibold text-warn-text">{fmtCountdown(h.expiresAt - now)}</span>
                     </Link>
                   </li>
                 );
@@ -131,17 +134,17 @@ export function Dashboard() {
         </section>
 
         {/* Side stats */}
-        <section className="grid content-start gap-3 sm:grid-cols-2">
-          <Link to="/follow-ups" className="card block p-4 hover:border-primary">
+        <section className="grid min-w-0 content-start gap-3 sm:grid-cols-2">
+          <Link to="/follow-ups" className="card block p-4 hover:border-[var(--muted)]">
             <p className="text-sm font-semibold text-muted">{t.dashboard.followUpsDue}</p>
-            <p className="tabular mt-1 text-2xl font-bold">{callbacks}</p>
+            <p className="tabular mt-1 text-2xl font-semibold">{callbacks}</p>
             <p className="mt-1 flex items-center gap-1 text-sm font-semibold">
               {t.nav.followUps} <Icon name="chevronRight" size={16} />
             </p>
           </Link>
-          <Link to="/register" className="card block p-4 hover:border-primary">
+          <Link to="/register" className="card block p-4 hover:border-[var(--muted)]">
             <p className="text-sm font-semibold text-muted">{t.dashboard.visitors}</p>
-            <p className="tabular mt-1 text-2xl font-bold">{visitors}</p>
+            <p className="tabular mt-1 text-2xl font-semibold">{visitors}</p>
             <p className="mt-1 flex items-center gap-1 text-sm font-semibold">
               <Icon name="qr" size={16} /> {t.nav.visitors}
             </p>
@@ -150,7 +153,7 @@ export function Dashboard() {
       </div>
 
       <section className="card p-4">
-        <h2 className="mb-3 text-lg font-bold">{t.dashboard.recentActivity}</h2>
+        <h2 className="mb-3 text-lg font-semibold">{t.dashboard.recentActivity}</h2>
         {recent.length === 0 ? <p className="text-muted">{t.dashboard.noActivity}</p> : <Timeline items={recent} showExhibitor />}
       </section>
 
