@@ -29,7 +29,7 @@ function initialDB(): DB {
 
 export const useStore = create<State>(() => ({
   db: initialDB(),
-  prefs: loadPrefs<Prefs>({ lang: 'en', theme: 'system' }),
+  prefs: loadPrefs<Prefs>({ lang: 'en', theme: 'light' }),
   now: Date.now(),
 }));
 

@@ -74,7 +74,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
 function ThemeToggle() {
   const theme = useStore((s) => s.prefs.theme);
   const t = useT();
-  const next: Record<Theme, Theme> = { system: 'light', light: 'dark', dark: 'system' };
+  const next: Record<Theme, Theme> = { light: 'dark', dark: 'system', system: 'light' };
   const label = { system: t.common.system, light: t.common.light, dark: t.common.dark }[theme];
   return (
     <button className="icon-btn gap-1 px-2" onClick={() => setPrefs({ theme: next[theme] })} aria-label={`${t.common.theme}: ${label}`} title={`${t.common.theme}: ${label}`}>
@@ -114,15 +114,17 @@ function EventSwitcher() {
   );
 }
 
+export const LOGO = `${import.meta.env.BASE_URL}logo.png`;
+export const LOGO_MARK = `${import.meta.env.BASE_URL}logo-mark.png`;
+
 function Brand() {
   const t = useT();
   return (
-    <NavLink to="/" className="flex min-h-[44px] items-center gap-2">
-      <span className="flex h-9 w-9 items-center justify-center rounded-[10px] bg-text text-lg font-semibold text-bg">P</span>
-      <span className="leading-tight">
-        <span className="block text-[17px] font-semibold tracking-[0.04em]">{t.app.name}</span>
-        <span className="hidden text-xs text-muted sm:block">{t.app.tagline}</span>
-      </span>
+    <NavLink to="/" className="flex min-h-[44px] shrink-0 items-center gap-3" aria-label={`${t.app.name} ${t.app.tagline}`}>
+      {/* Mark only on phones (header is tight); full wordmark from sm up */}
+      <img src={LOGO_MARK} alt="" className="logo-img h-10 w-auto sm:hidden" />
+      <img src={LOGO} alt="" className="logo-img hidden h-10 w-auto sm:block" />
+      <span className="hidden border-l border-border pl-3 text-xs leading-tight text-muted xl:block">{t.app.tagline}</span>
     </NavLink>
   );
 }

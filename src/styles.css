@@ -407,3 +407,8 @@ h3 {
 .plan-stall:hover .plan-box {
   stroke-width: 3px;
 }
+
+/* Brand logo is navy on transparent; show it white on dark surfaces. */
+[data-theme='dark'] .logo-img {
+  filter: brightness(0) invert(1);
+}

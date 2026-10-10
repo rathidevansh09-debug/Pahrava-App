@@ -10,6 +10,7 @@ import { confirmBooking, holdStall } from '../domain/stalls';
 import { Icon } from '../components/Icon';
 import { Legend } from './StallMap';
 import { FloorPlanView } from '../components/FloorPlanView';
+import { LOGO_MARK } from '../components/Shell';
 import { PageHeader } from '../components/ui';
 import { dictionaries, useT } from '../i18n';
 import { stallCode } from '../domain/stallcode';
@@ -169,7 +170,7 @@ export function WhatsAppDemo() {
         <div className="mx-auto w-full max-w-[380px] rounded-[2.5rem] border-[10px] border-black bg-black shadow-[var(--overlay-shadow)]">
           <div className="overflow-hidden rounded-[1.8rem]">
             <div className="flex items-center gap-3 bg-tile px-4 py-3 text-white">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/20 font-semibold">P</span>
+              <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-white p-1"><img src={LOGO_MARK} alt="" className="h-full w-auto" /></span>
               <div className="leading-tight">
                 <p className="font-semibold">PAHRAVA Exhibitions</p>
                 <p className="text-xs opacity-80">{t.wa.online}</p>

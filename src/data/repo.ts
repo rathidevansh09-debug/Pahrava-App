@@ -2,7 +2,7 @@
 import type { DB } from './types';
 
 export const DB_KEY = 'pahrava:db:v2';
-export const PREFS_KEY = 'pahrava:prefs:v1';
+export const PREFS_KEY = 'pahrava:prefs:v2';
 
 export function loadDB(): DB | null {
   try {

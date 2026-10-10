@@ -6,7 +6,7 @@ import { fmtRange, interpolate } from '../domain/format';
 import { isValidIndianMobile, normalizePhone } from '../domain/phone';
 import { uid } from '../lib/id';
 import { Icon } from '../components/Icon';
-import { LangToggle } from '../components/Shell';
+import { LangToggle, LOGO } from '../components/Shell';
 import { Field, Toasts } from '../components/ui';
 import { useT } from '../i18n';
 
@@ -38,14 +38,11 @@ export function VisitorRegister() {
 
   return (
     <div className="min-h-dvh bg-bg">
-      <div className="bg-tile px-4 pt-8 pb-16 text-white">
+      <div className="border-b border-border bg-surface px-4 pt-6 pb-16">
         <div className="mx-auto flex max-w-lg items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-[12px] bg-white text-xl font-semibold text-black">P</span>
-          <div className="flex-1">
-            <p className="text-xl font-semibold">PAHRAVA</p>
-            <p className="text-sm opacity-90">Exhibition & Lifestyle</p>
-          </div>
-          <div className="rounded-xl bg-surface p-0.5">
+          <img src={LOGO} alt="PAHRAVA — Fashion and Lifestyle Exhibition" className="logo-img h-11 w-auto max-w-[62%] object-contain object-left" />
+          <div className="flex-1" />
+          <div>
             <LangToggle compact />
           </div>
         </div>
