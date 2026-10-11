@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { CLOUD, REQUIRE_LOGIN } from '../data/cloud-config';
-import { exec, resetDemoData, useCloud, useDB } from '../data/store';
+import { exec, resetDemoData, useCloud, useDataMode, useDB } from '../data/store';
 import { ChangePassword, signOutStaff } from '../components/CloudGate';
 import { WaConnection } from '../components/WhatsApp';
+import { DataModeSwitch } from '../components/DataMode';
 import type { StallType } from '../data/types';
 import { deleteStallType, upsertStallType } from '../domain/events';
 import { interpolate } from '../domain/format';
@@ -17,6 +18,8 @@ export function Settings() {
   const t = useT();
   const db = useDB();
   const cloud = useCloud();
+  const mode = useDataMode();
+  const live = CLOUD && mode === 'live';
   const current = useCurrentEventId();
   const [eventId, setEventId] = useState(current ?? '');
   const [resetting, setResetting] = useState(false);
@@ -123,10 +126,10 @@ export function Settings() {
       </section>
 
       <section className="card space-y-2 border-[color-mix(in_srgb,var(--danger)_40%,transparent)] p-4">
-        <h2 className="text-lg font-semibold">{CLOUD ? t.settings.clear : t.settings.reset}</h2>
-        <p className="text-muted">{CLOUD ? t.settings.clearHint : t.settings.resetHint}</p>
+        <h2 className="text-lg font-semibold">{live ? t.settings.clear : t.settings.reset}</h2>
+        <p className="text-muted">{live ? t.settings.clearHint : t.settings.resetHint}</p>
         <button className="btn btn-danger" onClick={() => setResetting(true)}>
-          <Icon name={CLOUD ? 'trash' : 'refresh'} /> {CLOUD ? t.settings.clear : t.settings.reset}
+          <Icon name={live ? 'trash' : 'refresh'} /> {live ? t.settings.clear : t.settings.reset}
         </button>
       </section>
 
@@ -147,6 +150,14 @@ export function Settings() {
         </section>
       )}
 
+      {CLOUD && (
+        <section className="card space-y-2 p-4">
+          <h2 className="text-lg font-semibold">{t.mode.label}</h2>
+          <p className="text-muted">{t.mode.hint}</p>
+          <DataModeSwitch />
+        </section>
+      )}
+
       <WaConnection />
 
       <section className="card p-4">
@@ -156,13 +167,13 @@ export function Settings() {
 
       {resetting && (
         <ConfirmDialog
-          title={CLOUD ? `${t.settings.clear}?` : t.settings.resetTitle}
-          body={<p>{CLOUD ? t.settings.clearBody : t.settings.resetBody}</p>}
-          confirmLabel={CLOUD ? t.settings.clear : t.settings.reset}
+          title={live ? `${t.settings.clear}?` : t.settings.resetTitle}
+          body={<p>{live ? t.settings.clearBody : t.settings.resetBody}</p>}
+          confirmLabel={live ? t.settings.clear : t.settings.reset}
           onClose={() => setResetting(false)}
           onConfirm={() => {
             resetDemoData().then(
-              () => toast(CLOUD ? t.settings.clearDone : t.settings.resetDone),
+              () => toast(live ? t.settings.clearDone : t.settings.resetDone),
               () => toast(t.sync.failed, 'error'),
             );
           }}

@@ -5,6 +5,7 @@ import { LANGS, type Lang } from '../data/types';
 import { useT } from '../i18n';
 import { useCurrentEventId } from '../lib/hooks';
 import { SyncStatus } from './CloudGate';
+import { DataModeSwitch, DemoBanner } from './DataMode';
 import { GlobalSearch } from './GlobalSearch';
 import { Icon } from './Icon';
 import { Sheet, Toasts } from './ui';
@@ -159,6 +160,9 @@ export function Shell({ children }: { children: ReactNode }) {
           </div>
           <div className="ml-auto flex items-center gap-1">
             <SyncStatus />
+            <div className="hidden md:block">
+              <DataModeSwitch />
+            </div>
             <button className="icon-btn md:hidden" aria-label={t.common.search} onClick={() => setSearchOpen((v) => !v)}>
               <Icon name="search" />
             </button>
@@ -179,6 +183,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <div className="px-4 pb-2 md:hidden">
           <EventSwitcher />
         </div>
+        <DemoBanner />
       </header>
 
       <div className="flex">
@@ -219,6 +224,10 @@ export function Shell({ children }: { children: ReactNode }) {
 
       {moreOpen && (
         <Sheet title={t.nav.more} onClose={() => setMoreOpen(false)}>
+          <div className="mb-3 flex items-center gap-3">
+            <span className="text-sm font-semibold text-muted">{t.mode.label}</span>
+            <DataModeSwitch />
+          </div>
           <div className="grid gap-1">
             {secondary.map((i) => (
               <NavLink key={i.to + i.label} to={i.to} end={i.end} className={linkCls}>

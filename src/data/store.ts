@@ -8,10 +8,15 @@ import type { DB, Lang } from './types';
 
 export type Theme = 'light' | 'dark' | 'system';
 
+/** Which data this device shows: shared sample data, or the real (live) data. */
+export type DataMode = 'demo' | 'live';
+export const DEFAULT_DATA_MODE: DataMode = 'demo';
+
 export interface Prefs {
   lang: Lang;
   theme: Theme;
   eventId?: string;
+  dataMode?: DataMode;
 }
 
 /** Shared-database connection (only used when Firebase is configured). */
@@ -151,3 +156,4 @@ export const useDB = () => useStore((s) => s.db);
 export const useNow = () => useStore((s) => s.now);
 export const useLang = () => useStore((s) => s.prefs.lang);
 export const useCloud = () => useStore((s) => s.cloud);
+export const useDataMode = () => useStore((s) => s.prefs.dataMode ?? DEFAULT_DATA_MODE);

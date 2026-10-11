@@ -13,6 +13,10 @@ service cloud.firestore {
     match /pahrava/{docId} {
       allow read, write: if isStaff();
     }
+    // Demo (sample) data — same access; never touched by the live data or the WhatsApp server.
+    match /pahrava_demo/{docId} {
+      allow read, write: if isStaff();
+    }
     // Everything else is closed.
     match /{document=**} {
       allow read, write: if false;

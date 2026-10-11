@@ -39,11 +39,14 @@ import { dictionaries } from '../i18n';
 import { uid, withIdTape } from '../lib/id';
 import { chunkIds, decode, diff, META_ID, type Meta } from './codec';
 import { firebaseConfig, REQUIRE_LOGIN, useEmulator } from './cloud-config';
-import { createStarter } from './seed';
-import { emptyDB, registerCloud, setCloud, useStore } from './store';
+import { createSeed, createStarter } from './seed';
+import { DEFAULT_DATA_MODE, emptyDB, registerCloud, setCloud, setPrefs, useStore, type DataMode } from './store';
 import type { DB } from './types';
 
+/** Live (real) data; the WhatsApp server uses this one. Demo data lives beside it. */
 export const COLLECTION = 'pahrava';
+export const DEMO_COLLECTION = 'pahrava_demo';
+const collectionFor = (m: DataMode) => (m === 'live' ? COLLECTION : DEMO_COLLECTION);
 
 interface Op {
   id: string;
@@ -62,9 +65,10 @@ let confirmed: DB | null = null;
 let ops: Op[] = [];
 let flushing = false;
 let unsubData: Unsubscribe | null = null;
+let activeMode: DataMode = DEFAULT_DATA_MODE;
 
 const t = () => dictionaries[useStore.getState().prefs.lang];
-const ref = (id: string) => doc(fs, COLLECTION, id);
+const ref = (id: string) => doc(fs, collectionFor(activeMode), id);
 
 function apply(db: DB, op: Op): DB {
   return produce(db, (d) => {
@@ -179,12 +183,14 @@ async function flush() {
   }
 }
 
-/** First sign-in on a new project: start with the event layouts, no demo bookings. */
+/** Demo gets the full sample data; live starts with event layouts and no bookings. */
+const starting = () => (activeMode === 'demo' ? createSeed() : createStarter());
+
 async function seedIfEmpty() {
   await runTransaction(fs, async (tx) => {
     const metaSnap = await tx.get(ref(META_ID));
     if (metaSnap.exists()) return;
-    write(tx, null, createStarter(), 1, []);
+    write(tx, null, starting(), 1, []);
   });
 }
 
@@ -192,7 +198,7 @@ async function reset() {
   ops = [];
   await runTransaction(fs, async (tx) => {
     const cur = await readAll(tx);
-    write(tx, cur?.db ?? null, createStarter(), (cur?.meta.rev ?? 0) + 1, []);
+    write(tx, cur?.db ?? null, starting(), (cur?.meta.rev ?? 0) + 1, []);
   });
 }
 
@@ -200,9 +206,10 @@ async function reset() {
 
 function subscribe() {
   unsubData?.();
+  activeMode = useStore.getState().prefs.dataMode ?? DEFAULT_DATA_MODE;
   setCloud({ status: 'loading' });
   unsubData = onSnapshot(
-    collection(fs, COLLECTION),
+    collection(fs, collectionFor(activeMode)),
     (snap) => {
       const docs = new Map(snap.docs.map((d) => [d.id, d.data()]));
       const meta = docs.get(META_ID) as Meta | undefined;
@@ -221,6 +228,20 @@ function subscribe() {
       setCloud({ status: err.code === 'permission-denied' ? 'no_access' : 'loading' });
     },
   );
+}
+
+/** Switch this device between demo and live data. Not while changes are still saving. */
+export function switchDataMode(mode: DataMode) {
+  if (useStore.getState().cloud.pending > 0) return false;
+  setPrefs({ dataMode: mode });
+  if (mode === activeMode) return true;
+  unsubData?.();
+  unsubData = null;
+  confirmed = null;
+  ops = [];
+  useStore.setState({ db: emptyDB() });
+  if (auth.currentUser) subscribe();
+  return true;
 }
 
 // ---------- Auth

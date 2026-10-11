@@ -572,6 +572,16 @@ export const en = {
     editNote: 'After changing a template, submit it again — WhatsApp needs to approve every change.',
     status: { NONE: 'Not submitted', APPROVED: 'Approved', PENDING: 'Waiting for approval', IN_APPEAL: 'In appeal', REJECTED: 'Rejected', PAUSED: 'Paused', DISABLED: 'Disabled', ERROR: 'Error' },
   },
+  mode: {
+    label: 'Data',
+    demo: 'Demo',
+    live: 'Live',
+    banner: 'Demo mode — sample data for practice and client demos. Nothing here affects your real data.',
+    switchLive: 'Switch to live',
+    switchDemo: 'Switch to demo',
+    hint: 'Demo shows sample exhibitors and bookings, shared by everyone in demo mode. Live is your real data. Each phone or computer chooses for itself.',
+    wait: 'Please wait until your changes are saved.',
+  },
 } as const;
 
 type Widen<T> = { [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
