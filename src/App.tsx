@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { CloudGate } from './components/CloudGate';
 import { Shell } from './components/Shell';
+import { CLOUD } from './data/cloud-config';
 import { startBackground } from './data/store';
 import { Broadcasts } from './pages/Broadcasts';
 import { Dashboard } from './pages/Dashboard';
@@ -46,13 +48,18 @@ function StaffApp() {
 
 export default function App() {
   useEffect(() => startBackground(), []);
+  useEffect(() => {
+    if (CLOUD) void import('./data/cloud').then((m) => m.startCloud());
+  }, []);
   return (
-    <HashRouter>
-      <ScrollTop />
-      <Routes>
-        <Route path="/register" element={<VisitorRegister />} />
-        <Route path="/*" element={<StaffApp />} />
-      </Routes>
-    </HashRouter>
+    <CloudGate>
+      <HashRouter>
+        <ScrollTop />
+        <Routes>
+          <Route path="/register" element={<VisitorRegister />} />
+          <Route path="/*" element={<StaffApp />} />
+        </Routes>
+      </HashRouter>
+    </CloudGate>
   );
 }

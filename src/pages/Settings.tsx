@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { exec, resetDemoData, useDB } from '../data/store';
+import { CLOUD } from '../data/cloud-config';
+import { exec, resetDemoData, useCloud, useDB } from '../data/store';
+import { signOutStaff } from '../components/CloudGate';
 import type { StallType } from '../data/types';
 import { deleteStallType, upsertStallType } from '../domain/events';
 import { interpolate } from '../domain/format';
@@ -13,6 +15,7 @@ import { DEFAULT_TAGS } from '../data/types';
 export function Settings() {
   const t = useT();
   const db = useDB();
+  const cloud = useCloud();
   const current = useCurrentEventId();
   const [eventId, setEventId] = useState(current ?? '');
   const [resetting, setResetting] = useState(false);
@@ -125,20 +128,34 @@ export function Settings() {
         </button>
       </section>
 
+      {CLOUD && (
+        <section className="card flex flex-wrap items-center gap-3 p-4">
+          <div className="min-w-0 flex-1">
+            <h2 className="text-lg font-semibold">{t.settings.account}</h2>
+            <p className="truncate text-muted">{interpolate(t.auth.signedInAs, { email: cloud.email ?? '' })}</p>
+          </div>
+          <button className="btn" onClick={() => void signOutStaff()}>
+            {t.auth.signOut}
+          </button>
+        </section>
+      )}
+
       <section className="card p-4">
         <h2 className="text-lg font-semibold">{t.settings.about}</h2>
-        <p className="text-muted">{t.settings.aboutBody}</p>
+        <p className="text-muted">{CLOUD ? t.settings.aboutCloud : t.settings.aboutBody}</p>
       </section>
 
       {resetting && (
         <ConfirmDialog
           title={t.settings.resetTitle}
-          body={<p>{t.settings.resetBody}</p>}
+          body={<p>{CLOUD ? t.settings.resetBodyCloud : t.settings.resetBody}</p>}
           confirmLabel={t.settings.reset}
           onClose={() => setResetting(false)}
           onConfirm={() => {
-            resetDemoData();
-            toast(t.settings.resetDone);
+            resetDemoData().then(
+              () => toast(t.settings.resetDone),
+              () => toast(t.sync.failed, 'error'),
+            );
           }}
         />
       )}

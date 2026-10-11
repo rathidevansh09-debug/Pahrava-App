@@ -41,6 +41,25 @@ Two completed past events give exhibitors a history. Two holds expire within a f
 
 **Stall status is never stored.** It is derived from holds, bookings and payments (`domain/derive.ts`), so the map, ledger, dashboard and WhatsApp demo always agree.
 
+## Shared database (Firebase)
+
+Without Firebase settings the app stores everything in the browser (one copy per device).
+With them, staff sign in and every phone shares one live Firestore database.
+
+- **Config:** `VITE_FIREBASE_*` values in `.env.production` (and `.env.local` for `npm run dev`).
+  They identify the project and are safe to commit; access is controlled by sign-in and `firestore.rules`.
+- **Layout** (`src/data/codec.ts`): collection `pahrava` — a `meta` doc (revision, settings, chunk counts)
+  plus each list split into docs of up to 400 items (`stalls.0`, `exhibitors.0`, …). A full load is ~20 reads.
+- **Writes** (`src/data/cloud.ts`): a change shows on screen at once, then is re-run inside a Firestore
+  transaction on the latest data with the same ids. If another phone took the stall first, the change is
+  dropped and the user is told. Retries are exactly-once (recent change ids are kept in `meta`).
+- **Offline:** unsaved changes are kept and retried; the header shows "Offline · n not saved yet".
+- **Staff accounts:** created by the owner in Firebase console → Authentication. Self sign-up is switched off.
+- **Rules:** `firestore.rules` — signed-in users only. Deploy with `npx firebase deploy --only firestore:rules`
+  or paste into the console.
+- **Local testing without a project:** `npm run emulators` (needs Java) and `npm run dev:emulator`.
+  Create test users with the Auth emulator REST API or UI.
+
 ## Plugging in real services later
 
 - **Payments:** `createPaymentLink()` in `src/domain/payments.ts` is the placeholder. Call Razorpay Payment Links there and store the id on `Booking.paymentLinkId`. A webhook then calls `recordPayment()`.

@@ -4,6 +4,7 @@ import { setPrefs, useStore, type Theme } from '../data/store';
 import { LANGS, type Lang } from '../data/types';
 import { useT } from '../i18n';
 import { useCurrentEventId } from '../lib/hooks';
+import { SyncStatus } from './CloudGate';
 import { GlobalSearch } from './GlobalSearch';
 import { Icon } from './Icon';
 import { Sheet, Toasts } from './ui';
@@ -157,6 +158,7 @@ export function Shell({ children }: { children: ReactNode }) {
             </div>
           </div>
           <div className="ml-auto flex items-center gap-1">
+            <SyncStatus />
             <button className="icon-btn md:hidden" aria-label={t.common.search} onClick={() => setSearchOpen((v) => !v)}>
               <Icon name="search" />
             </button>
