@@ -54,7 +54,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
   const t = useT();
   const short: Record<Lang, string> = { en: 'EN', mr: 'मरा', hi: 'हिं' };
   return (
-    <div role="radiogroup" aria-label={t.common.language} className="inline-flex rounded-full bg-[var(--divider)] p-0.5">
+    <div role="radiogroup" aria-label={t.common.language} className="inline-flex rounded-full border border-border bg-surface p-0.5">
       {LANGS.map((l) => (
         <button
           key={l}
@@ -62,7 +62,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
           aria-checked={lang === l}
           lang={l}
           onClick={() => setPrefs({ lang: l })}
-          className={`min-h-[34px] min-w-[44px] rounded-full px-2.5 text-sm ${lang === l ? 'bg-surface font-semibold text-text ring-1 ring-[var(--border)]' : 'text-muted'}`}
+          className={`min-h-[34px] min-w-[44px] rounded-full px-2.5 text-sm ${lang === l ? 'bg-text font-semibold text-bg' : 'text-muted hover:text-text'}`}
         >
           {compact ? short[l] : t.langName[l]}
         </button>
@@ -142,12 +142,12 @@ export function Shell({ children }: { children: ReactNode }) {
   }, [loc.pathname]);
 
   const linkCls = ({ isActive }: { isActive: boolean }) =>
-    `flex min-h-[44px] items-center gap-3 rounded-[11px] px-3 text-[15px] ${isActive ? 'bg-surface font-semibold text-text ring-1 ring-[var(--border)] [&>svg]:text-link' : 'text-text/80 hover:bg-surface/60 hover:text-text'}`;
+    `flex min-h-[44px] items-center gap-3 rounded-lg px-3 text-[15px] ${isActive ? 'bg-surface-strong font-semibold text-text [&>svg]:text-primary' : 'text-body hover:bg-surface-2 hover:text-text'}`;
 
   return (
     <div className="min-h-dvh">
       {/* Header */}
-      <header className="frosted sticky top-0 z-30 border-b border-border">
+      <header className="chrome sticky top-0 z-30 border-b border-border">
         <div className="flex items-center gap-3 px-4 py-2">
           <Brand />
           <div className="hidden min-w-0 flex-1 items-center gap-3 md:flex">
@@ -197,13 +197,13 @@ export function Shell({ children }: { children: ReactNode }) {
       </div>
 
       {/* Mobile bottom tabs */}
-      <nav className="frosted fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden" aria-label={t.nav.menu}>
+      <nav className="chrome fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border pb-[env(safe-area-inset-bottom)] md:hidden" aria-label={t.nav.menu}>
         {primary.map((i) => (
           <NavLink
             key={i.to}
             to={i.to}
             end={i.end}
-            className={({ isActive }) => `flex min-h-[60px] flex-col items-center justify-center gap-0.5 text-[11px] leading-tight font-semibold ${isActive ? 'text-link' : 'text-muted'}`}
+            className={({ isActive }) => `flex min-h-[60px] flex-col items-center justify-center gap-0.5 text-[11px] leading-tight font-semibold ${isActive ? 'text-text [&>svg]:text-primary' : 'text-muted'}`}
           >
             <Icon name={i.icon} size={22} />
             <span className="max-w-full truncate px-1">{i.label}</span>

@@ -238,7 +238,7 @@ export function StallMap() {
                 role="tab"
                 aria-selected={f.id === floorId}
                 onClick={() => setFloorId(f.id)}
-                className={`-mb-px min-h-[44px] shrink-0 border-b-4 px-3 font-semibold sm:px-4 ${f.id === floorId ? 'border-primary text-text' : 'border-transparent text-muted'}`}
+                className={`-mb-px min-h-[44px] shrink-0 border-b-2 px-3 font-semibold sm:px-4 ${f.id === floorId ? 'border-text text-text' : 'border-transparent text-muted'}`}
               >
                 {f.name} <span className="tabular text-sm font-normal text-muted">{free}/{n}</span>
               </button>

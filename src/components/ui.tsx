@@ -23,7 +23,7 @@ export function StatusBadge({ status, short = false, className = '' }: { status:
 export function EmptyState({ icon = 'info', title, hint, action }: { icon?: string; title: string; hint?: string; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center gap-2 rounded-2xl border border-dashed border-border px-6 py-10 text-center">
-      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-link">
+      <span className="flex h-12 w-12 items-center justify-center rounded-full bg-primary-soft text-primary">
         <Icon name={icon} size={24} />
       </span>
       <p className="text-lg font-semibold">{title}</p>
@@ -85,7 +85,7 @@ export function Sheet({ title, onClose, children, footer }: { title: ReactNode; 
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="absolute inset-x-0 bottom-0 flex max-h-[92dvh] flex-col rounded-t-[18px] bg-surface shadow-[var(--overlay-shadow)] outline-none [animation:sheet-up_.2s_ease-out] md:inset-y-0 md:right-0 md:left-auto md:max-h-none md:w-[440px] md:rounded-none md:[animation:panel-in_.2s_ease-out]"
+        className="absolute inset-x-0 bottom-0 flex max-h-[92dvh] flex-col rounded-t-[20px] bg-surface shadow-[var(--overlay-shadow)] outline-none [animation:sheet-up_.2s_ease-out] md:inset-y-0 md:right-0 md:left-auto md:max-h-none md:w-[440px] md:rounded-none md:[animation:panel-in_.2s_ease-out]"
       >
         <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-border md:hidden" />
         <div className="flex items-center gap-2 border-b border-border px-4 py-2">
@@ -119,7 +119,7 @@ export function Modal({ title, onClose, children, footer, wide }: { title: React
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`relative flex max-h-[92dvh] w-full flex-col rounded-t-[18px] bg-surface shadow-[var(--overlay-shadow)] outline-none sm:rounded-[18px] ${wide ? 'sm:max-w-2xl' : 'sm:max-w-md'}`}
+        className={`relative flex max-h-[92dvh] w-full flex-col rounded-t-[20px] bg-surface shadow-[var(--overlay-shadow)] outline-none sm:rounded-[20px] ${wide ? 'sm:max-w-2xl' : 'sm:max-w-md'}`}
       >
         <div className="flex items-center gap-2 border-b border-border px-4 py-2">
           <h2 id={titleId} className="flex-1 text-lg font-semibold">
@@ -233,7 +233,7 @@ export function Field({ label, error, children, hint, htmlFor }: { label: ReactN
 
 export function Segmented<T extends string | number>({ value, options, onChange, label }: { value: T; options: { value: T; label: ReactNode }[]; onChange: (v: T) => void; label?: string }) {
   return (
-    <div role="radiogroup" aria-label={label} className="inline-flex flex-wrap gap-0.5 rounded-[20px] bg-[var(--divider)] p-0.5">
+    <div role="radiogroup" aria-label={label} className="inline-flex flex-wrap gap-0.5 rounded-[22px] border border-border bg-surface p-0.5">
       {options.map((o) => (
         <button
           key={String(o.value)}
@@ -241,7 +241,7 @@ export function Segmented<T extends string | number>({ value, options, onChange,
           role="radio"
           aria-checked={value === o.value}
           onClick={() => onChange(o.value)}
-          className={`min-h-[38px] rounded-full px-3.5 text-sm transition ${value === o.value ? 'bg-surface font-semibold text-text ring-1 ring-[var(--border)]' : 'text-muted'}`}
+          className={`min-h-[38px] rounded-full px-3.5 text-sm transition ${value === o.value ? 'bg-text font-semibold text-bg' : 'text-muted hover:text-text'}`}
         >
           {o.label}
         </button>
@@ -263,8 +263,8 @@ export function PageHeader({ title, subtitle, actions }: { title: ReactNode; sub
   return (
     <div className="mb-4 flex flex-wrap items-end gap-3">
       <div className="w-full min-w-0 sm:w-auto sm:flex-1">
-        <h1 className="text-[28px] leading-[1.1] font-semibold sm:text-[34px]">{title}</h1>
-        {subtitle && <p className="mt-1 text-[15px] text-muted">{subtitle}</p>}
+        <h1 className="text-[26px] leading-[1.2] font-bold sm:text-[28px]">{title}</h1>
+        {subtitle && <p className="mt-1 text-[15px] text-body">{subtitle}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
     </div>
@@ -274,8 +274,8 @@ export function PageHeader({ title, subtitle, actions }: { title: ReactNode; sub
 export function Stat({ label, value, sub, tone }: { label: string; value: ReactNode; sub?: ReactNode; tone?: string }) {
   return (
     <div className="card p-4">
-      <p className="text-sm font-semibold text-muted">{label}</p>
-      <p className={`tabular mt-1 text-[28px] leading-tight font-semibold ${tone ?? ''}`}>{value}</p>
+      <p className="text-sm font-medium text-muted">{label}</p>
+      <p className={`tabular mt-1 text-[28px] leading-tight font-bold ${tone ?? ''}`}>{value}</p>
       {sub && <p className="mt-0.5 text-sm text-muted">{sub}</p>}
     </div>
   );

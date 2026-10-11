@@ -68,7 +68,7 @@ export function LayoutEditor() {
       <div className="mb-3 flex flex-wrap items-center gap-2 border-b border-border">
         <div role="tablist" className="flex gap-1 overflow-x-auto">
           {floors.map((f) => (
-            <button key={f.id} role="tab" aria-selected={f.id === floorId} onClick={() => setFloorId(f.id)} className={`-mb-px min-h-[44px] border-b-4 px-4 font-semibold ${f.id === floorId ? 'border-primary' : 'border-transparent text-muted'}`}>
+            <button key={f.id} role="tab" aria-selected={f.id === floorId} onClick={() => setFloorId(f.id)} className={`-mb-px min-h-[44px] border-b-2 px-4 font-semibold ${f.id === floorId ? 'border-text' : 'border-transparent text-muted'}`}>
               {f.name}
             </button>
           ))}
@@ -119,7 +119,7 @@ export function LayoutEditor() {
                 .map((s) => {
                   const ty = idx.typeById.get(s.typeId);
                   return (
-                    <button key={s.id} onClick={() => setEditing(s.id)} className="relative flex h-16 w-16 flex-col items-center justify-center rounded-xl border-2 border-border bg-surface-2 hover:border-primary">
+                    <button key={s.id} onClick={() => setEditing(s.id)} className="relative flex h-16 w-16 flex-col items-center justify-center rounded-xl border-2 border-border bg-surface-2 hover:border-text">
                       {ty?.accent && <span className="absolute top-1 left-1 h-2.5 w-2.5 rounded-sm" style={{ background: ty.accent }} aria-hidden />}
                       {s.isCorner && <span className="absolute top-0.5 right-1 text-[10px]">◤</span>}
                       <span className="tabular font-semibold">{s.number}</span>
@@ -127,7 +127,7 @@ export function LayoutEditor() {
                     </button>
                   );
                 })}
-              <button className="flex h-16 w-16 items-center justify-center rounded-xl border-2 border-dashed border-border text-muted hover:border-primary" aria-label={`${t.layout.addStall} (${interpolate(t.layout.rowOf, { n: i + 1 })})`} onClick={() => quickAdd(r)}>
+              <button className="flex h-16 w-16 items-center justify-center rounded-xl border-2 border-dashed border-border text-muted hover:border-text" aria-label={`${t.layout.addStall} (${interpolate(t.layout.rowOf, { n: i + 1 })})`} onClick={() => quickAdd(r)}>
                 <Icon name="plus" />
               </button>
             </div>
