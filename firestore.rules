@@ -1,13 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Staff allowed to open PAHRAVA data. Add an email here (lower case) and
-    // create the account in Firebase Authentication to give someone access.
+    // Login is currently OFF (VITE_REQUIRE_LOGIN=false): the app connects with
+    // an anonymous Firebase identity, so anyone with the link can read and write.
+    //
+    // To require login again: set VITE_REQUIRE_LOGIN=true in .env.production and
+    // replace the condition below with the staff list:
+    //   request.auth != null && request.auth.token.email in ['rathidevansh09@gmail.com']
     function isStaff() {
-      return request.auth != null
-        && request.auth.token.email in [
-          'rathidevansh09@gmail.com'
-        ];
+      return request.auth != null;
     }
     match /pahrava/{docId} {
       allow read, write: if isStaff();

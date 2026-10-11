@@ -13,6 +13,7 @@ import {
   getAuth,
   onAuthStateChanged,
   reauthenticateWithCredential,
+  signInAnonymously,
   signInWithEmailAndPassword,
   signOut,
   updatePassword,
@@ -37,7 +38,7 @@ import { toast } from '../components/ui';
 import { dictionaries } from '../i18n';
 import { uid, withIdTape } from '../lib/id';
 import { chunkIds, decode, diff, META_ID, type Meta } from './codec';
-import { firebaseConfig, useEmulator } from './cloud-config';
+import { firebaseConfig, REQUIRE_LOGIN, useEmulator } from './cloud-config';
 import { createStarter } from './seed';
 import { emptyDB, registerCloud, setCloud, useStore } from './store';
 import type { DB } from './types';
@@ -261,6 +262,13 @@ export function startCloud() {
     if (user) {
       setCloud({ email: user.email ?? undefined });
       subscribe();
+    } else if (!REQUIRE_LOGIN) {
+      // Login switched off: connect with an invisible guest identity.
+      setCloud({ status: 'connecting' });
+      signInAnonymously(auth).catch((e) => {
+        console.error('Could not connect', e);
+        setCloud({ status: 'no_access' });
+      });
     } else {
       unsubData?.();
       unsubData = null;

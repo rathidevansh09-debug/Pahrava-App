@@ -18,3 +18,9 @@ export const firebaseConfig = env.VITE_FIREBASE_API_KEY
 export const useEmulator = env.VITE_FIREBASE_EMULATOR === 'true';
 
 export const CLOUD = firebaseConfig !== null;
+
+/**
+ * Staff must sign in with email and password. When false, the app connects on
+ * its own (Firebase anonymous sign-in) — anyone with the link can use it.
+ */
+export const REQUIRE_LOGIN = env.VITE_REQUIRE_LOGIN === 'true';

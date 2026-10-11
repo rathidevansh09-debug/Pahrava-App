@@ -55,7 +55,10 @@ With them, staff sign in and every phone shares one live Firestore database.
   dropped and the user is told. Retries are exactly-once (recent change ids are kept in `meta`).
 - **Offline:** unsaved changes are kept and retried; the header shows "Offline · n not saved yet".
 - **Project:** `pahrava-f5f3d`, Firestore in `asia-south1` (Mumbai), email/password sign-in.
-- **Staff access:** `firestore.rules` only lets listed emails read or write. To add someone: add their email
+- **Login switch:** `VITE_REQUIRE_LOGIN` in `.env.production`. Currently `false`: the app connects with
+  Firebase anonymous sign-in and anyone with the link can read and write. To require login, set it to `true`
+  and put the staff-email condition back in `firestore.rules` (see the comment there).
+- **Staff access (when login is on):** `firestore.rules` only lets listed emails read or write. To add someone: add their email
   to the list, create their account (Firebase console → Authentication → Add user), then
   `npx firebase deploy --only firestore:rules`.
 - **Local testing without a project:** `npm run emulators` (needs Java) and `npm run dev:emulator`.

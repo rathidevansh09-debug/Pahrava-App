@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CLOUD } from '../data/cloud-config';
+import { CLOUD, REQUIRE_LOGIN } from '../data/cloud-config';
 import { exec, resetDemoData, useCloud, useDB } from '../data/store';
 import { ChangePassword, signOutStaff } from '../components/CloudGate';
 import type { StallType } from '../data/types';
@@ -129,7 +129,7 @@ export function Settings() {
         </button>
       </section>
 
-      {CLOUD && (
+      {CLOUD && REQUIRE_LOGIN && (
         <section className="card flex flex-wrap items-center gap-3 p-4">
           <div className="min-w-0 flex-1">
             <h2 className="text-lg font-semibold">{t.settings.account}</h2>
