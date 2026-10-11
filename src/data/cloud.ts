@@ -7,7 +7,17 @@
 // is dropped here, and the user is told. Transactions are retried by Firestore
 // when the data changes underneath them, so two writes can never both win.
 import { initializeApp } from 'firebase/app';
-import { connectAuthEmulator, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, type Auth } from 'firebase/auth';
+import {
+  connectAuthEmulator,
+  EmailAuthProvider,
+  getAuth,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+  signInWithEmailAndPassword,
+  signOut,
+  updatePassword,
+  type Auth,
+} from 'firebase/auth';
 import {
   collection,
   connectFirestoreEmulator,
@@ -28,7 +38,7 @@ import { dictionaries } from '../i18n';
 import { uid, withIdTape } from '../lib/id';
 import { chunkIds, decode, diff, META_ID, type Meta } from './codec';
 import { firebaseConfig, useEmulator } from './cloud-config';
-import { createSeed } from './seed';
+import { createStarter } from './seed';
 import { emptyDB, registerCloud, setCloud, useStore } from './store';
 import type { DB } from './types';
 
@@ -168,12 +178,12 @@ async function flush() {
   }
 }
 
-/** First sign-in on a new project: fill the database with the demo data. */
+/** First sign-in on a new project: start with the event layouts, no demo bookings. */
 async function seedIfEmpty() {
   await runTransaction(fs, async (tx) => {
     const metaSnap = await tx.get(ref(META_ID));
     if (metaSnap.exists()) return;
-    write(tx, null, createSeed(), 1, []);
+    write(tx, null, createStarter(), 1, []);
   });
 }
 
@@ -181,7 +191,7 @@ async function reset() {
   ops = [];
   await runTransaction(fs, async (tx) => {
     const cur = await readAll(tx);
-    write(tx, cur?.db ?? null, createSeed(), (cur?.meta.rev ?? 0) + 1, []);
+    write(tx, cur?.db ?? null, createStarter(), (cur?.meta.rev ?? 0) + 1, []);
   });
 }
 
@@ -216,6 +226,14 @@ function subscribe() {
 
 export async function signIn(email: string, password: string) {
   await signInWithEmailAndPassword(auth, email.trim(), password);
+}
+
+/** Check the current password, then set a new one. */
+export async function changePassword(current: string, next: string) {
+  const user = auth.currentUser;
+  if (!user?.email) throw Object.assign(new Error('Not signed in'), { code: 'auth/requires-recent-login' });
+  await reauthenticateWithCredential(user, EmailAuthProvider.credential(user.email, current));
+  await updatePassword(user, next);
 }
 
 export async function signOutStaff() {

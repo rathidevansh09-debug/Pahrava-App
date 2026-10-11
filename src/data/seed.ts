@@ -415,3 +415,31 @@ export function createSeed(now = Date.now()): DB {
   db.activity.sort((a, b) => a.at - b.at);
   return db;
 }
+
+/**
+ * A clean start for real use: the upcoming events with their venues, floor plans,
+ * stall types and tariffs, plus message templates — and no demo exhibitors,
+ * bookings, payments, calls, visitors or activity.
+ */
+export function startFresh(db: DB) {
+  const keep = new Set(db.events.filter((e) => e.status !== 'completed').map((e) => e.id));
+  db.events = db.events.filter((e) => keep.has(e.id));
+  db.venues = db.venues.filter((v) => db.events.some((e) => e.venueId === v.id));
+  db.floors = db.floors.filter((f) => keep.has(f.eventId));
+  db.stallTypes = db.stallTypes.filter((x) => keep.has(x.eventId));
+  db.stalls = db.stalls.filter((s) => keep.has(s.eventId));
+  db.exhibitors = [];
+  db.holds = [];
+  db.bookings = [];
+  db.payments = [];
+  db.callLogs = [];
+  db.broadcasts = [];
+  db.visitors = [];
+  db.activity = [];
+}
+
+export function createStarter(now = Date.now()): DB {
+  const db = createSeed(now);
+  startFresh(db);
+  return db;
+}

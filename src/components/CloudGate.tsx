@@ -5,7 +5,7 @@ import { interpolate } from '../domain/format';
 import { useT } from '../i18n';
 import { Icon } from './Icon';
 import { LangToggle, LOGO } from './Shell';
-import { Field } from './ui';
+import { Field, Modal, toast } from './ui';
 
 const cloud = () => import('../data/cloud');
 
@@ -137,3 +137,79 @@ export function SyncStatus() {
 }
 
 export const signOutStaff = () => cloud().then((m) => m.signOutStaff());
+
+export function ChangePassword({ onClose }: { onClose: () => void }) {
+  const t = useT();
+  const [f, setF] = useState({ current: '', next: '', confirm: '' });
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string>();
+  const set = (k: keyof typeof f, v: string) => setF((x) => ({ ...x, [k]: v }));
+
+  const submit = async () => {
+    if (f.next.length < 8) return setError(t.auth.weak);
+    if (f.next !== f.confirm) return setError(t.auth.mismatch);
+    setBusy(true);
+    setError(undefined);
+    try {
+      await (await cloud()).changePassword(f.current, f.next);
+      toast(t.auth.passwordChanged);
+      onClose();
+    } catch (e) {
+      const code = (e as { code?: string }).code ?? '';
+      setError(
+        ['auth/invalid-credential', 'auth/wrong-password', 'auth/missing-password'].includes(code)
+          ? t.auth.wrongCurrent
+          : code === 'auth/weak-password'
+            ? t.auth.weak
+            : code === 'auth/too-many-requests'
+              ? t.auth.tooMany
+              : code === 'auth/network-request-failed'
+                ? t.auth.offline
+                : t.auth.failed,
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Modal
+      title={t.auth.changePassword}
+      onClose={onClose}
+      footer={
+        <>
+          <button className="btn" onClick={onClose}>
+            {t.common.cancel}
+          </button>
+          <button className="btn btn-primary" form="change-password" type="submit" disabled={busy}>
+            {t.common.save}
+          </button>
+        </>
+      }
+    >
+      <form
+        id="change-password"
+        className="space-y-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          void submit();
+        }}
+      >
+        <Field label={t.auth.currentPassword} htmlFor="cp-current">
+          <input id="cp-current" className="input" type="password" autoComplete="current-password" required value={f.current} onChange={(e) => set('current', e.target.value)} data-autofocus />
+        </Field>
+        <Field label={t.auth.newPassword} hint={t.auth.weak} htmlFor="cp-next">
+          <input id="cp-next" className="input" type="password" autoComplete="new-password" required value={f.next} onChange={(e) => set('next', e.target.value)} />
+        </Field>
+        <Field label={t.auth.confirmPassword} htmlFor="cp-confirm">
+          <input id="cp-confirm" className="input" type="password" autoComplete="new-password" required value={f.confirm} onChange={(e) => set('confirm', e.target.value)} />
+        </Field>
+        {error && (
+          <p className="flex items-center gap-1 text-sm font-semibold text-danger" role="alert">
+            <Icon name="alert" size={16} /> {error}
+          </p>
+        )}
+      </form>
+    </Modal>
+  );
+}

@@ -13,7 +13,7 @@
     "dev:emulator": "vite --mode emulator"
   },
   "dependencies": {
-    "@fontsource-variable/inter": "^5.3.0",
+    "@fontsource-variable/figtree": "^5.3.0",
     "@fontsource/noto-sans-devanagari": "^5.3.0",
     "date-fns": "^4.4.0",
     "firebase": "^13.0.0",

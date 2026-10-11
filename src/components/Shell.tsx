@@ -55,7 +55,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
   const t = useT();
   const short: Record<Lang, string> = { en: 'EN', mr: 'मरा', hi: 'हिं' };
   return (
-    <div role="radiogroup" aria-label={t.common.language} className="inline-flex rounded-full border border-border bg-surface p-0.5">
+    <div role="radiogroup" aria-label={t.common.language} className="inline-flex rounded-[10px] bg-neutral p-0.5">
       {LANGS.map((l) => (
         <button
           key={l}
@@ -63,7 +63,7 @@ export function LangToggle({ compact = false }: { compact?: boolean }) {
           aria-checked={lang === l}
           lang={l}
           onClick={() => setPrefs({ lang: l })}
-          className={`min-h-[34px] min-w-[44px] rounded-full px-2.5 text-sm ${lang === l ? 'bg-text font-semibold text-bg' : 'text-muted hover:text-text'}`}
+          className={`min-h-[36px] min-w-[44px] rounded-lg px-2.5 text-sm md:min-h-[28px] md:text-[13px] ${lang === l ? 'bg-surface font-semibold text-text shadow-[var(--float)]' : 'text-muted hover:text-text'}`}
         >
           {compact ? short[l] : t.langName[l]}
         </button>
@@ -143,7 +143,7 @@ export function Shell({ children }: { children: ReactNode }) {
   }, [loc.pathname]);
 
   const linkCls = ({ isActive }: { isActive: boolean }) =>
-    `flex min-h-[44px] items-center gap-3 rounded-lg px-3 text-[15px] ${isActive ? 'bg-surface-strong font-semibold text-text [&>svg]:text-primary' : 'text-body hover:bg-surface-2 hover:text-text'}`;
+    `flex min-h-[44px] items-center gap-3 rounded-lg px-3 text-[15px] md:min-h-[36px] md:text-sm ${isActive ? 'bg-neutral font-semibold text-text' : 'text-muted hover:bg-[var(--hover)] hover:text-text'}`;
 
   return (
     <div className="min-h-dvh">
@@ -205,7 +205,7 @@ export function Shell({ children }: { children: ReactNode }) {
             key={i.to}
             to={i.to}
             end={i.end}
-            className={({ isActive }) => `flex min-h-[60px] flex-col items-center justify-center gap-0.5 text-[11px] leading-tight font-semibold ${isActive ? 'text-text [&>svg]:text-primary' : 'text-muted'}`}
+            className={({ isActive }) => `flex min-h-[60px] flex-col items-center justify-center gap-0.5 text-[11px] leading-tight font-semibold ${isActive ? 'text-text' : 'text-muted'}`}
           >
             <Icon name={i.icon} size={22} />
             <span className="max-w-full truncate px-1">{i.label}</span>

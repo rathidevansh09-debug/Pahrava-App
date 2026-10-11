@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { CLOUD } from '../data/cloud-config';
 import { exec, resetDemoData, useCloud, useDB } from '../data/store';
-import { signOutStaff } from '../components/CloudGate';
+import { ChangePassword, signOutStaff } from '../components/CloudGate';
 import type { StallType } from '../data/types';
 import { deleteStallType, upsertStallType } from '../domain/events';
 import { interpolate } from '../domain/format';
@@ -20,6 +20,7 @@ export function Settings() {
   const [eventId, setEventId] = useState(current ?? '');
   const [resetting, setResetting] = useState(false);
   const [templates, setTemplates] = useState(false);
+  const [changingPw, setChangingPw] = useState(false);
   const [newTag, setNewTag] = useState('');
   const event = db.events.find((e) => e.id === eventId);
   const types = db.stallTypes.filter((x) => x.eventId === eventId);
@@ -121,10 +122,10 @@ export function Settings() {
       </section>
 
       <section className="card space-y-2 border-[color-mix(in_srgb,var(--danger)_40%,transparent)] p-4">
-        <h2 className="text-lg font-semibold">{t.settings.reset}</h2>
-        <p className="text-muted">{t.settings.resetHint}</p>
+        <h2 className="text-lg font-semibold">{CLOUD ? t.settings.clear : t.settings.reset}</h2>
+        <p className="text-muted">{CLOUD ? t.settings.clearHint : t.settings.resetHint}</p>
         <button className="btn btn-danger" onClick={() => setResetting(true)}>
-          <Icon name="refresh" /> {t.settings.reset}
+          <Icon name={CLOUD ? 'trash' : 'refresh'} /> {CLOUD ? t.settings.clear : t.settings.reset}
         </button>
       </section>
 
@@ -134,9 +135,14 @@ export function Settings() {
             <h2 className="text-lg font-semibold">{t.settings.account}</h2>
             <p className="truncate text-muted">{interpolate(t.auth.signedInAs, { email: cloud.email ?? '' })}</p>
           </div>
-          <button className="btn" onClick={() => void signOutStaff()}>
-            {t.auth.signOut}
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button className="btn" onClick={() => setChangingPw(true)}>
+              {t.auth.changePassword}
+            </button>
+            <button className="btn" onClick={() => void signOutStaff()}>
+              {t.auth.signOut}
+            </button>
+          </div>
         </section>
       )}
 
@@ -147,19 +153,20 @@ export function Settings() {
 
       {resetting && (
         <ConfirmDialog
-          title={t.settings.resetTitle}
-          body={<p>{CLOUD ? t.settings.resetBodyCloud : t.settings.resetBody}</p>}
-          confirmLabel={t.settings.reset}
+          title={CLOUD ? `${t.settings.clear}?` : t.settings.resetTitle}
+          body={<p>{CLOUD ? t.settings.clearBody : t.settings.resetBody}</p>}
+          confirmLabel={CLOUD ? t.settings.clear : t.settings.reset}
           onClose={() => setResetting(false)}
           onConfirm={() => {
             resetDemoData().then(
-              () => toast(t.settings.resetDone),
+              () => toast(CLOUD ? t.settings.clearDone : t.settings.resetDone),
               () => toast(t.sync.failed, 'error'),
             );
           }}
         />
       )}
       {templates && <TemplateEditor onClose={() => setTemplates(false)} />}
+      {changingPw && <ChangePassword onClose={() => setChangingPw(false)} />}
     </div>
   );
 }

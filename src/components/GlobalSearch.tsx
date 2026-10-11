@@ -46,12 +46,9 @@ export function GlobalSearch({ autoFocus, onDone }: { autoFocus?: boolean; onDon
 
   return (
     <div ref={ref} className="relative w-full">
-      {/* Pill search terminated by the Rausch search orb */}
-      <span aria-hidden className="pointer-events-none absolute top-1/2 right-1.5 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-white">
-        <Icon name="search" size={18} />
-      </span>
+      <Icon name="search" size={18} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-muted" />
       <input
-        className="input pr-12 [&::-webkit-search-cancel-button]:hidden"
+        className="input pl-9"
         type="search"
         inputMode="search"
         autoFocus={autoFocus}
@@ -72,7 +69,7 @@ export function GlobalSearch({ autoFocus, onDone }: { autoFocus?: boolean; onDon
         }}
       />
       {show && (
-        <div className="card absolute inset-x-0 top-full z-30 mt-2 max-h-[60vh] overflow-y-auto p-1 shadow-[var(--float)]">
+        <div className="card absolute inset-x-0 top-full z-30 mt-1 max-h-[60vh] overflow-y-auto p-1 shadow-[var(--shadow-med)]">
           {results.length === 0 ? (
             <div className="p-3">
               <p className="text-muted">{t.search.noResults}</p>

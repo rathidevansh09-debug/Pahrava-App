@@ -85,11 +85,11 @@ export function Sheet({ title, onClose, children, footer }: { title: ReactNode; 
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="absolute inset-x-0 bottom-0 flex max-h-[92dvh] flex-col rounded-t-[20px] bg-surface shadow-[var(--overlay-shadow)] outline-none [animation:sheet-up_.2s_ease-out] md:inset-y-0 md:right-0 md:left-auto md:max-h-none md:w-[440px] md:rounded-none md:[animation:panel-in_.2s_ease-out]"
+        className="absolute inset-x-0 bottom-0 flex max-h-[92dvh] flex-col rounded-t-xl bg-surface shadow-[var(--overlay-shadow)] outline-none [animation:sheet-up_.2s_ease-out] md:inset-y-0 md:right-0 md:left-auto md:max-h-none md:w-[440px] md:rounded-none md:[animation:panel-in_.2s_ease-out]"
       >
         <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-border md:hidden" />
         <div className="flex items-center gap-2 border-b border-border px-4 py-2">
-          <h2 id={titleId} className="min-w-0 flex-1 text-lg font-semibold">
+          <h2 id={titleId} className="min-w-0 flex-1 text-[17px] font-bold">
             {title}
           </h2>
           <button className="icon-btn" onClick={onClose} aria-label={t.common.close}>
@@ -119,10 +119,10 @@ export function Modal({ title, onClose, children, footer, wide }: { title: React
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className={`relative flex max-h-[92dvh] w-full flex-col rounded-t-[20px] bg-surface shadow-[var(--overlay-shadow)] outline-none sm:rounded-[20px] ${wide ? 'sm:max-w-2xl' : 'sm:max-w-md'}`}
+        className={`relative flex max-h-[92dvh] w-full flex-col rounded-t-xl bg-surface shadow-[var(--overlay-shadow)] outline-none sm:rounded-xl ${wide ? 'sm:max-w-2xl' : 'sm:max-w-md'}`}
       >
         <div className="flex items-center gap-2 border-b border-border px-4 py-2">
-          <h2 id={titleId} className="flex-1 text-lg font-semibold">
+          <h2 id={titleId} className="flex-1 text-[17px] font-bold">
             {title}
           </h2>
           <button className="icon-btn" onClick={onClose} aria-label={t.common.close}>
@@ -200,7 +200,7 @@ export function Toasts() {
       {list.map((x) => (
         <div
           key={x.id}
-          className={`pointer-events-auto flex max-w-lg items-center gap-2 rounded-full px-5 py-3 text-[15px] [animation:fade-in_.15s] ${
+          className={`pointer-events-auto flex max-w-lg items-center gap-2 rounded-lg px-4 py-3 text-sm shadow-[var(--overlay-shadow)] [animation:fade-in_.15s] ${
             x.kind === 'error' ? 'bg-danger text-white dark:text-[#2b0b09]' : 'bg-text text-bg'
           }`}
         >
@@ -233,7 +233,7 @@ export function Field({ label, error, children, hint, htmlFor }: { label: ReactN
 
 export function Segmented<T extends string | number>({ value, options, onChange, label }: { value: T; options: { value: T; label: ReactNode }[]; onChange: (v: T) => void; label?: string }) {
   return (
-    <div role="radiogroup" aria-label={label} className="inline-flex flex-wrap gap-0.5 rounded-[22px] border border-border bg-surface p-0.5">
+    <div role="radiogroup" aria-label={label} className="inline-flex flex-wrap gap-0.5 rounded-[10px] bg-neutral p-0.5">
       {options.map((o) => (
         <button
           key={String(o.value)}
@@ -241,7 +241,7 @@ export function Segmented<T extends string | number>({ value, options, onChange,
           role="radio"
           aria-checked={value === o.value}
           onClick={() => onChange(o.value)}
-          className={`min-h-[38px] rounded-full px-3.5 text-sm transition ${value === o.value ? 'bg-text font-semibold text-bg' : 'text-muted hover:text-text'}`}
+          className={`min-h-[38px] rounded-lg px-3 text-sm transition md:min-h-[28px] md:text-[13px] ${value === o.value ? 'bg-surface font-semibold text-text shadow-[var(--float)]' : 'text-muted hover:text-text'}`}
         >
           {o.label}
         </button>
@@ -263,8 +263,8 @@ export function PageHeader({ title, subtitle, actions }: { title: ReactNode; sub
   return (
     <div className="mb-4 flex flex-wrap items-end gap-3">
       <div className="w-full min-w-0 sm:w-auto sm:flex-1">
-        <h1 className="text-[26px] leading-[1.2] font-bold sm:text-[28px]">{title}</h1>
-        {subtitle && <p className="mt-1 text-[15px] text-body">{subtitle}</p>}
+        <h1 className="text-2xl leading-tight font-semibold">{title}</h1>
+        {subtitle && <p className="mt-1 text-muted">{subtitle}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
     </div>
@@ -275,7 +275,7 @@ export function Stat({ label, value, sub, tone }: { label: string; value: ReactN
   return (
     <div className="card p-4">
       <p className="text-sm font-medium text-muted">{label}</p>
-      <p className={`tabular mt-1 text-[28px] leading-tight font-bold ${tone ?? ''}`}>{value}</p>
+      <p className={`tabular mt-1 text-2xl leading-tight font-semibold ${tone ?? ''}`}>{value}</p>
       {sub && <p className="mt-0.5 text-sm text-muted">{sub}</p>}
     </div>
   );
