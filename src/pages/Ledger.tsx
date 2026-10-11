@@ -5,6 +5,7 @@ import type { StallStatus } from '../data/types';
 import { bookingStatus, indexDB, paidFor } from '../domain/derive';
 import { daysUntil, fmtRange, interpolate, money } from '../domain/format';
 import { Icon } from '../components/Icon';
+import { WaSendButton } from '../components/WhatsApp';
 import { PaymentForm } from '../components/PaymentForm';
 import { EmptyState, Modal, PageHeader, Segmented, StatusBadge } from '../components/ui';
 import { useT } from '../i18n';
@@ -135,9 +136,12 @@ export function Ledger() {
                       </td>
                       <td className="p-3 text-right">
                         {r.due > 0 && event.status !== 'completed' && (
-                          <button className="btn btn-sm" onClick={() => setPaying(r.b.id)}>
-                            <Icon name="rupee" size={16} /> {t.stall.recordPayment}
-                          </button>
+                          <span className="inline-flex flex-wrap justify-end gap-1">
+                            <button className="btn btn-sm" onClick={() => setPaying(r.b.id)}>
+                              <Icon name="rupee" size={16} /> {t.stall.recordPayment}
+                            </button>
+                            <WaSendButton className="btn btn-sm" templateKey="payment_reminder" exhibitorId={r.b.exhibitorId} eventId={event.id} label={t.whatsapp.sendReminder} />
+                          </span>
                         )}
                       </td>
                     </tr>
@@ -195,9 +199,12 @@ export function Ledger() {
                     </div>
                   </div>
                   {r.due > 0 && event.status !== 'completed' && (
-                    <button className="btn btn-sm mt-2 w-full" onClick={() => setPaying(r.b.id)}>
-                      <Icon name="rupee" size={16} /> {t.stall.recordPayment}
-                    </button>
+                    <div className="mt-2 grid gap-2">
+                      <button className="btn btn-sm w-full" onClick={() => setPaying(r.b.id)}>
+                        <Icon name="rupee" size={16} /> {t.stall.recordPayment}
+                      </button>
+                      <WaSendButton className="btn btn-sm w-full" templateKey="payment_reminder" exhibitorId={r.b.exhibitorId} eventId={event.id} label={t.whatsapp.sendReminder} />
+                    </div>
                   )}
                 </div>
               );

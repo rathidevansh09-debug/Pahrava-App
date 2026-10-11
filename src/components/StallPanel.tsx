@@ -13,6 +13,7 @@ import { useT, type Dict } from '../i18n';
 import { errorText } from '../lib/hooks';
 import { ExhibitorPicker } from './ExhibitorPicker';
 import { Icon } from './Icon';
+import { WaSendButton } from './WhatsApp';
 import { PaymentForm } from './PaymentForm';
 import { Avatar, ConfirmDialog, Field, Modal, Segmented, Sheet, StatusBadge, toast } from './ui';
 import { stallCode } from '../domain/stallcode';
@@ -287,6 +288,7 @@ export function StallPanel({ stallId, preselectId, onClose }: { stallId: string;
                     <Icon name="link" /> {t.stall.paymentLink}
                   </button>
                 </div>
+                {st.hold && <WaSendButton templateKey="hold_expiring" exhibitorId={st.hold.exhibitorId} eventId={event.id} label={t.whatsapp.sendHoldReminder} />}
               </>
             )}
             {st.booking && (
@@ -306,6 +308,8 @@ export function StallPanel({ stallId, preselectId, onClose }: { stallId: string;
                     </button>
                   )}
                 </div>
+                <WaSendButton templateKey="booking_confirmation" exhibitorId={st.booking.exhibitorId} eventId={event.id} label={t.whatsapp.sendConfirmation} />
+                {st.due > 0 && <WaSendButton templateKey="payment_reminder" exhibitorId={st.booking.exhibitorId} eventId={event.id} label={t.whatsapp.sendReminder} />}
               </>
             )}
             {st.status !== 'available' && (

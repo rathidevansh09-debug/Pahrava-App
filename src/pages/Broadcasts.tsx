@@ -4,6 +4,9 @@ import { CATEGORIES, DEFAULT_TAGS, LANGS, type Broadcast, type BroadcastFilters,
 import { renderMessage, resolveAudience, sendBroadcast } from '../domain/broadcast';
 import { fmtDateTime, interpolate } from '../domain/format';
 import { Icon } from '../components/Icon';
+import { WaTemplateStatus } from '../components/WhatsApp';
+import { WHATSAPP } from '../data/cloud-config';
+import { callWa, waError } from '../data/whatsapp';
 import { Avatar, ChipToggle, ConfirmDialog, EmptyState, Field, Modal, PageHeader, toast } from '../components/ui';
 import { tagLabel, useT } from '../i18n';
 import { useCurrentEventId } from '../lib/hooks';
@@ -14,7 +17,7 @@ export function PrototypeBanner() {
   const t = useT();
   return (
     <p className="mb-4 flex items-start gap-2 rounded-xl border border-[var(--st-hold-border)] bg-warn-soft p-3 font-semibold text-warn-text" role="note">
-      <Icon name="info" className="mt-0.5" /> {t.broadcasts.banner}
+      <Icon name="info" className="mt-0.5" /> {WHATSAPP ? t.whatsapp.bannerLive : t.broadcasts.banner}
     </p>
   );
 }
@@ -31,6 +34,7 @@ export function Broadcasts() {
   const [confirming, setConfirming] = useState(false);
   const [last, setLast] = useState<Broadcast>();
   const [editing, setEditing] = useState(false);
+  const [sending, setSending] = useState(false);
 
   const audience = useMemo(() => resolveAudience(db, filters), [db, filters]);
   const template = db.templates.find((x) => x.id === templateId);
@@ -39,7 +43,19 @@ export function Broadcasts() {
   const allTags = Array.from(new Set([...DEFAULT_TAGS, ...db.settings.customTags]));
   const history = [...db.broadcasts].sort((a, b) => b.createdAt - a.createdAt);
 
-  const send = () => {
+  const send = async () => {
+    if (WHATSAPP) {
+      setSending(true);
+      try {
+        const r = await callWa<{ broadcastId: string; sent: number; failed: number; noTemplate: number }>('waSendBroadcast', { templateId, eventId: eventId || undefined, filters });
+        toast(interpolate(t.whatsapp.result, { sent: r.sent, failed: r.failed, skipped: r.noTemplate }), r.failed || r.noTemplate ? 'error' : 'ok');
+      } catch (e) {
+        toast(interpolate(t.whatsapp.sendFailed, { error: waError(e) }), 'error');
+      } finally {
+        setSending(false);
+      }
+      return;
+    }
     const b = exec((d, now) => sendBroadcast(d, { templateId, eventId: eventId || undefined, filters }, now));
     setLast(b);
     toast(interpolate(t.broadcasts.sent, { n: b.recipientIds.length }));
@@ -148,8 +164,8 @@ export function Broadcasts() {
                 <Icon name="x" size={16} /> {interpolate(t.broadcasts.excluded, { n: audience.excludedNoConsent.length })}
               </p>
             )}
-            <button className="btn btn-primary mt-3 w-full" disabled={!audience.included.length || !template} onClick={() => setConfirming(true)}>
-              <Icon name="send" /> {interpolate(t.broadcasts.send, { n: audience.included.length })}
+            <button className="btn btn-primary mt-3 w-full" disabled={!audience.included.length || !template || sending} onClick={() => setConfirming(true)}>
+              <Icon name="send" /> {sending ? t.broadcasts.sending : interpolate(t.broadcasts.send, { n: audience.included.length })}
             </button>
           </div>
 
@@ -231,6 +247,7 @@ export function Broadcasts() {
                       </span>
                     ))}
                     {b.excludedCount > 0 && <span className="tag text-danger">−{b.excludedCount}</span>}
+                    {b.delivery && <span className="tag">{interpolate(t.whatsapp.delivery, b.delivery)}</span>}
                   </span>
                 </li>
               );
@@ -245,12 +262,12 @@ export function Broadcasts() {
           title={t.broadcasts.sendTitle}
           body={
             <>
-              <p>{interpolate(t.broadcasts.sendBody, { n: audience.included.length, x: audience.excludedNoConsent.length })}</p>
-              <p className="text-sm text-warn-text">{t.broadcasts.banner}</p>
+              <p>{interpolate(WHATSAPP ? t.whatsapp.sendBodyLive : t.broadcasts.sendBody, { n: audience.included.length, x: audience.excludedNoConsent.length })}</p>
+              <p className="text-sm text-warn-text">{WHATSAPP ? t.whatsapp.bannerLive : t.broadcasts.banner}</p>
             </>
           }
           confirmLabel={interpolate(t.broadcasts.send, { n: audience.included.length })}
-          onConfirm={send}
+          onConfirm={() => void send()}
           onClose={() => setConfirming(false)}
         />
       )}
@@ -268,6 +285,18 @@ export function TemplateEditor({ onClose }: { onClose: () => void }) {
   const [id, setId] = useState(db.templates[0]?.id);
   const tpl = db.templates.find((x) => x.id === id);
   const [draft, setDraft] = useState<Template | undefined>(tpl);
+  const [submitting, setSubmitting] = useState(false);
+  const submit = async () => {
+    setSubmitting(true);
+    try {
+      const r = await callWa<{ errors: string[] }>('waSyncTemplates');
+      toast(r.errors.length ? r.errors[0] : t.whatsapp.submitted, r.errors.length ? 'error' : 'ok');
+    } catch (e) {
+      toast(interpolate(t.whatsapp.sendFailed, { error: waError(e) }), 'error');
+    } finally {
+      setSubmitting(false);
+    }
+  };
   const pick = (newId: string) => {
     setId(newId);
     setDraft(db.templates.find((x) => x.id === newId));
@@ -290,6 +319,11 @@ export function TemplateEditor({ onClose }: { onClose: () => void }) {
           <button className="btn" onClick={onClose}>
             {t.common.close}
           </button>
+          {WHATSAPP && (
+            <button className="btn" onClick={() => void submit()} disabled={submitting}>
+              <Icon name="send" size={18} /> {submitting ? t.whatsapp.submitting : t.whatsapp.submit}
+            </button>
+          )}
           <button className="btn btn-primary" onClick={save}>
             <Icon name="check" size={18} /> {t.common.save}
           </button>
@@ -307,10 +341,13 @@ export function TemplateEditor({ onClose }: { onClose: () => void }) {
         <p className="text-sm text-muted">
           {t.templates.variables}: <span className="tabular">{VARS.join(' ')}</span>
         </p>
+        {WHATSAPP && <p className="text-sm text-muted">{t.whatsapp.editNote}</p>}
         {draft &&
           LANGS.map((l: Lang) => (
             <fieldset key={l} className="space-y-2 rounded-xl border border-border p-3" lang={l}>
-              <legend className="px-1 font-semibold">{t.langName[l]}</legend>
+              <legend className="flex items-center gap-2 px-1 font-semibold">
+                {t.langName[l]} <WaTemplateStatus status={tpl?.wa?.[l]} />
+              </legend>
               <input className="input" aria-label={`${t.templates.name} (${t.langName[l]})`} value={draft.name[l]} onChange={(e) => setDraft({ ...draft, name: { ...draft.name, [l]: e.target.value } })} />
               <textarea className="input min-h-[110px]" aria-label={`${t.templates.body} (${t.langName[l]})`} value={draft.body[l]} onChange={(e) => setDraft({ ...draft, body: { ...draft.body, [l]: e.target.value } })} />
             </fieldset>

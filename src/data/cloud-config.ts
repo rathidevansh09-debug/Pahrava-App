@@ -24,3 +24,6 @@ export const CLOUD = firebaseConfig !== null;
  * its own (Firebase anonymous sign-in) — anyone with the link can use it.
  */
 export const REQUIRE_LOGIN = env.VITE_REQUIRE_LOGIN === 'true';
+
+/** Real WhatsApp sending through the Firebase Functions server (functions/). */
+export const WHATSAPP = firebaseConfig !== null && env.VITE_WHATSAPP === 'true';

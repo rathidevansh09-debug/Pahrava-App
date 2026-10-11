@@ -196,6 +196,8 @@ export interface Template extends Base {
   key: TemplateKey | string;
   name: Record<Lang, string>;
   body: Record<Lang, string>;
+  /** Meta approval status per language once submitted (APPROVED, PENDING, REJECTED, …). */
+  wa?: Partial<Record<Lang, string>>;
 }
 
 export interface BroadcastFilters {
@@ -212,6 +214,8 @@ export interface Broadcast extends Base {
   recipientIds: string[];
   excludedCount: number;
   countsByLang: Record<Lang, number>;
+  /** Real WhatsApp delivery, updated by the server from Meta status webhooks. */
+  delivery?: { sent: number; delivered: number; read: number; failed: number };
 }
 
 export interface Visitor extends Base {
@@ -237,6 +241,7 @@ export type ActivityKind =
   | 'payment_link'
   | 'call_logged'
   | 'message_sent'
+  | 'message_received'
   | 'stall_added'
   | 'stall_removed';
 

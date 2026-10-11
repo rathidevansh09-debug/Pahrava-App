@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { CLOUD, REQUIRE_LOGIN } from '../data/cloud-config';
 import { exec, resetDemoData, useCloud, useDB } from '../data/store';
 import { ChangePassword, signOutStaff } from '../components/CloudGate';
+import { WaConnection } from '../components/WhatsApp';
 import type { StallType } from '../data/types';
 import { deleteStallType, upsertStallType } from '../domain/events';
 import { interpolate } from '../domain/format';
@@ -145,6 +146,8 @@ export function Settings() {
           </div>
         </section>
       )}
+
+      <WaConnection />
 
       <section className="card p-4">
         <h2 className="text-lg font-semibold">{t.settings.about}</h2>

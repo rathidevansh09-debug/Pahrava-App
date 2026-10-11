@@ -19,6 +19,7 @@ const KIND_ICON: Record<ActivityLog['kind'], string> = {
   payment_link: 'link',
   call_logged: 'phone',
   message_sent: 'chat',
+  message_received: 'chat',
   stall_added: 'plus',
   stall_removed: 'trash',
 };
