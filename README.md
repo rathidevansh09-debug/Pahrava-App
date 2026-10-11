@@ -54,9 +54,10 @@ With them, staff sign in and every phone shares one live Firestore database.
   transaction on the latest data with the same ids. If another phone took the stall first, the change is
   dropped and the user is told. Retries are exactly-once (recent change ids are kept in `meta`).
 - **Offline:** unsaved changes are kept and retried; the header shows "Offline · n not saved yet".
-- **Staff accounts:** created by the owner in Firebase console → Authentication. Self sign-up is switched off.
-- **Rules:** `firestore.rules` — signed-in users only. Deploy with `npx firebase deploy --only firestore:rules`
-  or paste into the console.
+- **Project:** `pahrava-f5f3d`, Firestore in `asia-south1` (Mumbai), email/password sign-in.
+- **Staff access:** `firestore.rules` only lets listed emails read or write. To add someone: add their email
+  to the list, create their account (Firebase console → Authentication → Add user), then
+  `npx firebase deploy --only firestore:rules`.
 - **Local testing without a project:** `npm run emulators` (needs Java) and `npm run dev:emulator`.
   Create test users with the Auth emulator REST API or UI.
 

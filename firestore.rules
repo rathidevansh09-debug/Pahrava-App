@@ -1,11 +1,16 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // PAHRAVA data: any signed-in staff account can read and write.
-    // Self sign-up is switched off in Firebase Authentication, so only the
-    // accounts the owner creates in the Firebase console can sign in.
+    // Staff allowed to open PAHRAVA data. Add an email here (lower case) and
+    // create the account in Firebase Authentication to give someone access.
+    function isStaff() {
+      return request.auth != null
+        && request.auth.token.email in [
+          'rathidevansh09@gmail.com'
+        ];
+    }
     match /pahrava/{docId} {
-      allow read, write: if request.auth != null;
+      allow read, write: if isStaff();
     }
     // Everything else is closed.
     match /{document=**} {
